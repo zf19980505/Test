@@ -12,27 +12,19 @@ class Test:
         self.driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[1]/div/div/input').send_keys('ceshi4')
         self.driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[2]/div/div[1]/input').send_keys('123456')
         self.driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[3]/div/button').click()
-        # 进入商品列表
-        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[2]/div/span').click()
-        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[2]/ul/li').click()
-        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button[3]/span').click()
-        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[6]/div/div[2]/form/div/div/div/div[1]/input').click()
-        self.driver.find_element_by_xpath('/html/body/div[4]/div[1]/div[1]/ul/li[1]/span').click()
-        # text = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/ul').find_elements_by_xpath('li')
-        # self.driver.find_element_by_xpath(
-        #     '//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/span/div/input').send_keys(Keys.BACK_SPACE)
-        # self.driver.find_element_by_xpath(
-        #     '//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/span/div/input').send_keys(len(text))
-        # self.driver.find_element_by_xpath(
-        #     '//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/span/div/input').send_keys(Keys.ENTER)
-        # sleep(1)
-        # test = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody').find_elements_by_class_name('el-table__row')
-        # print(len(test))
-        # b = 0
-        # for jishu in test:
-        #     b = b+1
-        # print(b)
-        print('-------结束前三秒------------')
+        # 拼团开始
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[9]/div/span').click()
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[1]').click()
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button/span').click()
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1]').click()
+        sleep(2)
+        print('---------选择时间开始前--------')
+        # self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div/div[2]/table/tbody/tr[4]/td[3]').click()
+        # self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div/div[2]/table/tbody/tr[4]/td[4]/div/span').click()
+        test = self.driver.find_element_by_class_name('el-date-table__row')
+        print('--------', test)
+        self.driver.find_element_by_class_name('available').click()
+        print('-------选择时间结束前三秒------------')
         sleep(3)
         self.driver.quit()
 

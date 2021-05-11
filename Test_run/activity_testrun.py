@@ -19,7 +19,7 @@ class Activity_TestRun(unittest.TestCase):
         date = kwargs['login']
         self.activity_case.login(username=data['username'], password=data['password'], url=data['url'], elemter=date)
         test_text = self.activity_case.login_text
-        self.assertEqual(first=self.data['verify'], second=test_text, msg='访问首页有误')
+        self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
 
     @file_data('../Data/activity.yaml')
     def test_newgroud(self, **kwargs):

@@ -1,14 +1,20 @@
 Activity:
     activitys:
         # 活动管理
-        groud_activity: (xpath, // *[ @ id="app"]/div/div[1]/div/div/ul/li[9]/div/span)
+        groud_activity: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/div/span)
         # 拼团活动列表
-        groud_list: (xpath, // *[ @ id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[1])
+        groud_list: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[1])
         # 拼团活动
         grouds:
             # 新建拼团活动
             new_groud:
               # 新建按钮
-              new: (xpath, // *[ @ id="app"]/div/div[2]/div[2]/div/div/div[1]/button/span)
+              new: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button/span)
+              # 打开新建时间
+              time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1])
+              # 开始时间
+              start_time: (class_name,available today)
+              # 结束时间
+              end_time: (class_name,available)
         # 转盘活动列表
-        turntable_list: (xpath, // *[ @ id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[2])
+        turntable_list: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[2])
