@@ -29,9 +29,13 @@ class Activity_TestRun(unittest.TestCase):
         # 拼团活动
         grouds = activitys['grouds']
         # 新建拼团活动
+        grouds_goods = grouds['grouds_goods']
         new_groud = grouds['new_groud']
-        self.activity_case.new_groud(activitys_el=activitys, groud_el=new_groud)
-
+        new_data = grouds['new_data']
+        self.activity_case.new_groud(activitys_el=activitys, groud_el=grouds_goods, group_data=new_data, newgroud_el=new_groud)
+        new_textone = self.activity_case.new_textone
+        new_texttwo = self.activity_case.new_texttwo
+        self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败')
 
     # def tearDown(self):
     #     test_text = self.activity_case.login_text

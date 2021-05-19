@@ -1,6 +1,6 @@
 login:
   data:
-    url: 'http://wscadmin.xcxback.cn/admin/'
+    url: 'http://testadmin.3dshowarea.com/admin/'
     username: ceshi4
     password: 123456
     verify: ceshi4
