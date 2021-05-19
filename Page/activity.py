@@ -53,7 +53,7 @@ class Activity(BaserPage):
         self.click(locator=start_time, locators=None)
         self.click(locator=end_time, locators=None)
         self.click(locator=time_submit, locators=None)
-        # =========================================
+        # ==============设置拼团有效时间和拼团人数===========================
         self.send_key(locator=group_order_time, locators=None, value=group_data['date_order_time'])
         self.send_key(locator=group_order_number, locators=None, value=group_data['date_order_number'])
         # =========选择设置拼团商品============
@@ -75,3 +75,12 @@ class Activity(BaserPage):
         group_goods = goods_numone[group_spu_number].find_elements_by_xpath('td')
         self.new_texttwo = group_goods[3].text
         self.quit()
+
+    # 删除拼团
+    def delete_group(self, groud_el):
+        # 转换数据类型
+        goods_numberone = self.str_by_tuple(groud_el['goods_numberone'])
+        goods_numbertwo = self.str_by_tuple(groud_el['goods_numbertwo'])
+        # 拿到所有拼团
+        goods_num = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
+        group_spu_number = len(goods_num)

@@ -22,7 +22,7 @@ class Activity_TestRun(unittest.TestCase):
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
 
     @file_data('../Data/activity.yaml')
-    def test_newgroud(self, **kwargs):
+    def test_new_group(self, **kwargs):
         """新建拼团活动"""
         # 活动管理
         activitys = kwargs['activitys']
@@ -36,6 +36,17 @@ class Activity_TestRun(unittest.TestCase):
         new_textone = self.activity_case.new_textone
         new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败')
+
+    @file_data('../Data/activity.yaml')
+    def test_delete_group(self, **kwargs):
+        """删除拼团"""
+        # 活动管理
+        activitys = kwargs['activitys']
+        # 拼团活动
+        grouds = activitys['grouds']
+        # 新建拼团活动
+        grouds_goods = grouds['grouds_goods']
+        self.activity_case.delete_group(groud_el=grouds_goods)
 
     # def tearDown(self):
     #     test_text = self.activity_case.login_text
