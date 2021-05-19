@@ -40,7 +40,6 @@ class Activity(BaserPage):
         group_sputwo = self.str_by_tuple(newgroud_el['group_sputwo'])
         new_submit = self.str_by_tuple(newgroud_el['new_submit'])
         # 活动管理
-        print(11111)
         self.click(locator=groud_activity, locators=None)
         # 拼团活动列表
         self.click(locator=groud_list, locators=None)
