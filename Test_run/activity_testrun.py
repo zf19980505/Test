@@ -2,7 +2,7 @@ import unittest
 from selenium import webdriver
 from Page.activity import *
 from ddt import ddt, file_data
-import BeautifulReport
+# import BeautifulReport
 
 driver = webdriver.Chrome()
 
@@ -14,6 +14,7 @@ class Activity_TestRun(unittest.TestCase):
 
     @file_data('../Data/login.yaml')
     def test_login(self, **kwargs):
+        print(111111)
         """"登录"""
         data = kwargs['data']
         date = kwargs['login']
