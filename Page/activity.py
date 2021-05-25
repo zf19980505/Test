@@ -1,23 +1,24 @@
 from Common.Element import *
+from Common.Air_Element import *
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 import random
 
 
 class Activity(BaserPage):
-    # 用户登录
-    def login(self, username, password, url, elemter):
-        # 转换数据类型
-        user_name = self.str_by_tuple(elemter['username'])
-        user_password = self.str_by_tuple(elemter['password'])
-        user_submit = self.str_by_tuple(elemter['submit'])
-        user_text = self.str_by_tuple(elemter['text'])
-        # 业务实现
-        self.open(url=url)
-        self.send_key(locator=user_name, locators=None, value=username)
-        self.send_key(locator=user_password, locators=None, value=password)
-        self.click(locator=user_submit, locators=None)
-        self.login_text = self.locator_text(locator=user_text, locators=None)
+    # # 用户登录
+    # def login(self, username, password, url, elemter):
+    #     # 转换数据类型
+    #     user_name = self.str_by_tuple(elemter['username'])
+    #     user_password = self.str_by_tuple(elemter['password'])
+    #     user_submit = self.str_by_tuple(elemter['submit'])
+    #     user_text = self.str_by_tuple(elemter['text'])
+    #     # 业务实现
+    #     self.open(url=url)
+    #     self.send_key(locator=user_name, locators=None, value=username)
+    #     self.send_key(locator=user_password, locators=None, value=password)
+    #     self.click(locator=user_submit, locators=None)
+    #     self.login_text = self.locator_text(locator=user_text, locators=None)
 
     # 新建拼团
     def new_groud(self, activitys_el, newgroud_el, group_data, groud_el):
@@ -53,7 +54,7 @@ class Activity(BaserPage):
         self.click(locator=start_time, locators=None)
         self.click(locator=end_time, locators=None)
         self.click(locator=time_submit, locators=None)
-        # ==============设置拼团有效时间和拼团人数===========================
+        # =========================================
         self.send_key(locator=group_order_time, locators=None, value=group_data['date_order_time'])
         self.send_key(locator=group_order_number, locators=None, value=group_data['date_order_number'])
         # =========选择设置拼团商品============
@@ -73,14 +74,7 @@ class Activity(BaserPage):
         self.click(locator=new_submit, locators=None)
         goods_numone = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
         group_goods = goods_numone[group_spu_number].find_elements_by_xpath('td')
+        sleep(5)
         self.new_texttwo = group_goods[3].text
-        self.quit()
+        # self.quit()
 
-    # 删除拼团
-    def delete_group(self, groud_el):
-        # 转换数据类型
-        goods_numberone = self.str_by_tuple(groud_el['goods_numberone'])
-        goods_numbertwo = self.str_by_tuple(groud_el['goods_numbertwo'])
-        # 拿到所有拼团
-        goods_num = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
-        group_spu_number = len(goods_num)

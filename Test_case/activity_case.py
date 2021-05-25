@@ -2,24 +2,18 @@ import unittest
 from selenium import webdriver
 from Page.activity import *
 from ddt import ddt, file_data
-import BeautifulReport
-
-driver = webdriver.Chrome()
+# from poco.drivers.android.uiautomation import AndroidUiautomationPoco
+# import BeautifulReport
 
 
 @ddt
 class Activity_TestRun(unittest.TestCase):
-    def setUp(self):
-        self.activity_case = Activity(driver)
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome()
 
-    @file_data('../Data/login.yaml')
-    def test_login(self, **kwargs):
-        """"登录"""
-        data = kwargs['data']
-        date = kwargs['login']
-        self.activity_case.login(username=data['username'], password=data['password'], url=data['url'], elemter=date)
-        test_text = self.activity_case.login_text
-        self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
+    def setUp(self):
+        self.activity_case = Activity(self.driver)
 
     @file_data('../Data/activity.yaml')
     def test_new_group(self, **kwargs):
@@ -32,7 +26,8 @@ class Activity_TestRun(unittest.TestCase):
         grouds_goods = grouds['grouds_goods']
         new_groud = grouds['new_groud']
         new_data = grouds['new_data']
-        self.activity_case.new_groud(activitys_el=activitys, groud_el=grouds_goods, group_data=new_data, newgroud_el=new_groud)
+        self.activity_case.new_groud(activitys_el=activitys, groud_el=grouds_goods, group_data=new_data,
+                                     newgroud_el=new_groud)
         new_textone = self.activity_case.new_textone
         new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败')

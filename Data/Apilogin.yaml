@@ -1,0 +1,10 @@
+APIlogin:
+  # 进入微信打开小程序
+  mimiapp:
+    # 发现
+    discover: (id,com.tencent.mm:id/dtx)
+    # 点击小程序列表
+    mimiapp_buttom: (id,android:id/title)
+    # 进入小程序
+    mimi_app: (link text,AR试鞋)
+
