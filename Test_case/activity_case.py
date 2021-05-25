@@ -32,16 +32,16 @@ class Activity_TestRun(unittest.TestCase):
         new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败')
 
-    @file_data('../Data/activity.yaml')
-    def test_delete_group(self, **kwargs):
-        """删除拼团"""
-        # 活动管理
-        activitys = kwargs['activitys']
-        # 拼团活动
-        grouds = activitys['grouds']
-        # 新建拼团活动
-        grouds_goods = grouds['grouds_goods']
-        self.activity_case.delete_group(groud_el=grouds_goods)
+    # @file_data('../Data/activity.yaml')
+    # def test_delete_group(self, **kwargs):
+    #     """删除拼团"""
+    #     # 活动管理
+    #     activitys = kwargs['activitys']
+    #     # 拼团活动
+    #     grouds = activitys['grouds']
+    #     # 新建拼团活动
+    #     grouds_goods = grouds['grouds_goods']
+    #     self.activity_case.delete_group(groud_el=grouds_goods)
 
     # def tearDown(self):
     #     test_text = self.activity_case.login_text
@@ -49,7 +49,7 @@ class Activity_TestRun(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.TestCase()
+    unittest.main()
     # test_case = unittest.TestLoader().loadTestsFromTestCase(TestRun)
     # BeautifulReport.BeautifulReport(
     #   test_case).report(filename='login_report', description='登录自动化', report_dir='../Report')

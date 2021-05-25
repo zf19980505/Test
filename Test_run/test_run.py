@@ -26,4 +26,4 @@ class Test_Server(unittest.TestCase):
 if __name__ == '__main__':
     # unittest.main()
     Test_runner = unittest.TextTestRunner()
-    Test_runner.run(Test_Server())
+    Test_runner.run(unittest.TestCase())

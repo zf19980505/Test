@@ -1,5 +1,4 @@
 from selenium import webdriver
-from appium import webdriver as apiwebdriver
 from ddt import ddt, file_data
 from time import sleep
 from Page.activity import *

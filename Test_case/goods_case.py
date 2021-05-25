@@ -35,7 +35,7 @@ class Goods_TestRun(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.TestCase()
+    unittest.main()
     # test_case = unittest.TestLoader().loadTestsFromTestCase(TestRun)
     # BeautifulReport.BeautifulReport(
     #   test_case).report(filename='login_report', description='登录自动化', report_dir='../Report')
