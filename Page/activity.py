@@ -45,7 +45,7 @@ class Activity(BaserPage):
         # 拼团活动列表
         self.click(locator=groud_list, locators=None)
         goods_num = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
-        group_spu_number = len(goods_num)
+        self.group_spu_number = len(goods_num)
         # 新建拼团活动按钮
         self.click(locator=new_groud, locators=None)
         # 打开新建时间
@@ -73,8 +73,33 @@ class Activity(BaserPage):
         self.new_textone = group_spu[0].text
         self.click(locator=new_submit, locators=None)
         goods_numone = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
-        group_goods = goods_numone[group_spu_number].find_elements_by_xpath('td')
+        group_goods = goods_numone[self.group_spu_number].find_elements_by_xpath('td')
         sleep(5)
         self.new_texttwo = group_goods[3].text
         # self.quit()
+
+    # 删除拼团
+    def delete_group(self, groud_el):
+        # 转换数据类型
+        goods_numberone = self.str_by_tuple(groud_el['goods_numberone'])
+        goods_numbertwo = self.str_by_tuple(groud_el['goods_numbertwo'])
+        grouds_delete = self.str_by_tuple(groud_el['grouds_delete'])
+        goods_numone = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
+        group_goods = goods_numone[self.group_spu_number].find_elements_by_xpath('td')
+        sleep(5)
+        # 获取到添加拼团商品的最新一条的拼团商品spu
+        self.delete_text_one = group_goods[3].text
+        sleep(5)
+        # 点击删除按钮
+        group_goods[8].click()
+        # 点击删除的二次确认
+        self.click(locator=grouds_delete, locators=None)
+        sleep(2)
+        goods_numone = self.locator_element(locator=goods_numberone, locators=goods_numbertwo)
+        group_goods = goods_numone[self.group_spu_number].find_elements_by_xpath('td')
+        sleep(5)
+        # 获取到删除拼团商品的最新一条的拼团商品spu
+        self.delete_text_two = group_goods[3].text
+
+
 

@@ -11,6 +11,8 @@ Activity:
               goods_numberone: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[2]/div/div[3]/table/tbody)
               # 获取表单内的所有内容
               goods_numbertwo: (xpath,tr)
+              # 删除拼团的二次确认
+              grouds_delete: (xpath,/html/body/div[2]/div/div[3]/button[2]/span)
             # 新建拼团活动数据
             new_data:
               # 设置成团有效时间

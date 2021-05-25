@@ -30,22 +30,21 @@ class Activity_TestRun(unittest.TestCase):
                                      newgroud_el=new_groud)
         new_textone = self.activity_case.new_textone
         new_texttwo = self.activity_case.new_texttwo
-        self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败')
+        self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败！')
 
-    # @file_data('../Data/activity.yaml')
-    # def test_delete_group(self, **kwargs):
-    #     """删除拼团"""
-    #     # 活动管理
-    #     activitys = kwargs['activitys']
-    #     # 拼团活动
-    #     grouds = activitys['grouds']
-    #     # 新建拼团活动
-    #     grouds_goods = grouds['grouds_goods']
-    #     self.activity_case.delete_group(groud_el=grouds_goods)
-
-    # def tearDown(self):
-    #     test_text = self.activity_case.login_text
-    #     self.assertEqual(first=self.data['verify'], second=test_text, msg='访问首页有误')
+    @file_data('../Data/activity.yaml')
+    def test_delete_group(self, **kwargs):
+        """删除拼团"""
+        # 活动管理
+        activitys = kwargs['activitys']
+        # 拼团活动
+        grouds = activitys['grouds']
+        # 新建拼团活动
+        grouds_goods = grouds['grouds_goods']
+        self.activity_case.delete_group(groud_el=grouds_goods)
+        delete_text_one = self.activity_case.delete_text_one
+        delete_text_two = self.activity_case.delete_text_two
+        self.assertEqual(first=delete_text_one, second=delete_text_two, msg='删除拼团失败！')
 
 
 if __name__ == '__main__':
