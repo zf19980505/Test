@@ -2,7 +2,7 @@ class BaserPage:
     # 初始化基础类
     def __init__(self, driver):
         self.driver = driver
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(60)
 
     # 启动浏览器，访问指定页面
     def open(self, url):
