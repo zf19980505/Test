@@ -1,7 +1,8 @@
 class BaserPage:
     # 初始化基础类
-    def __init__(self, driver):
+    def __init__(self, driver, keyboard):
         self.driver = driver
+        self.keyboard = keyboard
         self.driver.implicitly_wait(60)
 
     # 启动浏览器，访问指定页面
@@ -31,6 +32,11 @@ class BaserPage:
     # 关闭浏览器
     def quit(self):
         self.driver.quit()
+
+    # 模拟键盘Ctrl + 任意键
+    def keyboard_Ctrl(self, locator, locators, value):
+        keyboard_value = self.keyboard.CONTROL + value
+        self.send_key(locator, locators, keyboard_value)
 
     # yaml文件字符串转元组
     def str_by_tuple(self, date):

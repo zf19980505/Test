@@ -13,8 +13,8 @@ class Goods_TestRun(unittest.TestCase):
         cls.driver = webdriver.Chrome()
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver)
-        self.goods_case = Goods(self.driver)
+        self.Login_case = Login_server(self.driver, Keys)
+        self.goods_case = Goods(self.driver, Keys)
 
     @file_data('../Data/login.yaml')
     def test_loging(self, **kwargs):

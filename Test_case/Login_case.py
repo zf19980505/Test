@@ -19,7 +19,7 @@ class Login(unittest.TestCase):
         # cls.test_poco = Airtest_Server(AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False))
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver)
+        self.Login_case = Login_server(self.driver, Keys)
 
     @file_data('../Data/login.yaml')
     def test_open(self, **kwargs):

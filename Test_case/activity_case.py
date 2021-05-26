@@ -1,9 +1,9 @@
 import unittest
 from selenium import webdriver
 from Page.activity import *
+from selenium.webdriver.common.keys import Keys
 from ddt import ddt, file_data
 from Page.Login import *
-# from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 # import BeautifulReport
 
 
@@ -14,8 +14,8 @@ class Activity_TestRun(unittest.TestCase):
         cls.driver = webdriver.Chrome()
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver)
-        self.activity_case = Activity(self.driver)
+        self.Login_case = Login_server(self.driver, Keys)
+        self.activity_case = Activity(self.driver, Keys)
 
     @file_data('../Data/login.yaml')
     def test_0_loging(self, **kwargs):
@@ -39,9 +39,9 @@ class Activity_TestRun(unittest.TestCase):
         new_data = grouds['new_data']
         self.activity_case.new_groud(activitys_el=activitys, groud_el=grouds_goods, group_data=new_data,
                                      newgroud_el=new_groud)
-        new_textone = self.activity_case.new_textone
-        new_texttwo = self.activity_case.new_texttwo
-        self.assertEqual(first=new_textone, second=new_texttwo, msg='新建拼团失败！')
+        self.new_textone = self.activity_case.new_textone
+        self.new_texttwo = self.activity_case.new_texttwo
+        self.assertEqual(first=self.new_textone, second=self.new_texttwo, msg='新建拼团失败！')
 
     @file_data('../Data/activity.yaml')
     def test_2_deletegroup(self, **kwargs):
@@ -53,9 +53,8 @@ class Activity_TestRun(unittest.TestCase):
         # 新建拼团活动
         grouds_goods = grouds['grouds_goods']
         self.activity_case.delete_group(groud_el=grouds_goods)
-        delete_text_one = self.activity_case.delete_text_one
-        delete_text_two = self.activity_case.delete_text_two
-        self.assertEqual(first=delete_text_one, second=delete_text_two, msg='删除拼团失败！')
+        self.delete_text = self.activity_case.delete_text
+        self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
 
     def test_3_over(self):
         self.Login_case.close()
@@ -63,6 +62,3 @@ class Activity_TestRun(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    # test_case = unittest.TestLoader().loadTestsFromTestCase(TestRun)
-    # BeautifulReport.BeautifulReport(
-    #   test_case).report(filename='login_report', description='登录自动化', report_dir='../Report')
