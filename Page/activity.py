@@ -76,7 +76,6 @@ class Activity(BaserPage):
         group_goods = goods_numone[self.group_spu_number].find_elements_by_xpath('td')
         sleep(5)
         self.new_texttwo = group_goods[3].text
-        # self.quit()
 
     # 删除拼团
     def delete_group(self, groud_el):
