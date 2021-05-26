@@ -1,5 +1,6 @@
 import unittest
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from Page.goods import *
 from Page.Login import *
 from ddt import ddt, file_data
