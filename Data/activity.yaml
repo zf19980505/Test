@@ -30,7 +30,7 @@ Activity:
           # 打开新建时间
           time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1])
           # 开始时间
-          start_time: (xpath,/html/body/div[3]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
+          start_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
           # 结束日期
           end_date: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[1]/div/input)
           # 结束时间

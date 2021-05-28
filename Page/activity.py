@@ -32,6 +32,7 @@ class Activity(BaserPage, metaclass=Singleton):
         sleep(1)
         # 模拟ctrl + a全选
         sleep(1)
+        self.click(locator=newgroud_el['start_time'], locators=None)
         self.keyboard_Ctrl(locator=newgroud_el['start_time'], locators=None, value=group_data['groud_ctrl'])
         sleep(1)
         self.send_key(locator=newgroud_el['start_time'], locators=None, value=group_data['start_end_times'])
@@ -69,7 +70,8 @@ class Activity(BaserPage, metaclass=Singleton):
                 print('单个sku零售价：', float(group_spu[5].text))
                 print('单个sku的拼团价格：', groud_prices)
                 if float(group_spu[4].text) < groud_prices < float(group_spu[5].text):
-                    group_spu[6].find_element(newgroud_el['groud_price']).send_keys(str(groud_prices))
+                    price_keys, price_values = newgroud_el['groud_price']
+                    group_spu[6].find_element(price_keys, price_values).send_keys(str(groud_prices))
                     break
             # 拿到该拼团商品的spu
             self.new_textone = group_spu[0].text

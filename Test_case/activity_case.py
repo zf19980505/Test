@@ -60,9 +60,6 @@ class Activity_TestRun(unittest.TestCase):
         self.new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=self.new_textone, second=self.new_texttwo, msg='新建拼团失败！')
 
-    # def test_2_addgroup(self, **kwargs):
-    #     pass
-
     @file_data('../Data/activity.yaml')
     def test_2_deletegroup(self, **kwargs):
         """删除拼团"""
