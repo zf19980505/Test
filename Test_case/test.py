@@ -11,16 +11,21 @@ driver.get('http://testadmin.3dshowarea.com/admin/')
 driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[1]/div/div/input').send_keys('ceshi4')
 driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[2]/div/div[1]/input').send_keys('123456')
 driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[3]/div/button').click()
-# 拼团
-driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[9]/div/span').click()
-driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[1]').click()
-# driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button/span').click()
-# 选中拼团商品
-test_grpuds_tr = driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[2]/div/div[3]/table/tbody'
-                                               ).find_elements_by_xpath('tr')
-for goouds_td in test_grpuds_tr:
-    grouds = goouds_td.find_elements_by_xpath('td')
-    print(grouds[3].text)
-sleep(2)
+# 首页列表
+tel_menu = driver.find_element_by_class_name('el-menu-vertical-demo').find_elements_by_xpath('li')
+for menu_name in tel_menu:
+    print(menu_name.text)
+    if menu_name.text == '活动管理':
+        menu_name.click()
+        a = ('xpath', 'li')
+        module_el = menu_name.find_element_by_class_name('el-menu').find_elements(a)
+        print(module_el)
+        print(type(module_el))
+        for module_name in module_el:
+            print('-------', module_name.text)
+            if module_name.text == '拼团管理':
+                module_name.click()
+
+sleep(5)
 driver.quit()
 

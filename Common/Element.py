@@ -14,6 +14,8 @@ class BaserPage:
     def locator_element(self, locator, locators):
         if locators == None:
             locatorkey, locator_value = locator
+            print(locatorkey)
+            print(locator_value)
             return self.driver.find_element(locatorkey, locator_value)
         else:
             locatorkey, locator_value = locator
@@ -37,10 +39,3 @@ class BaserPage:
     def keyboard_Ctrl(self, locator, locators, value):
         keyboard_value = self.keyboard.CONTROL + value
         self.send_key(locator, locators, keyboard_value)
-
-    # yaml文件字符串转元组
-    def str_by_tuple(self, date):
-        str_data = date[1: -1]
-        str_data_one, str_data_two = str_data.split(',')
-        tuple_data = (str_data_one, str_data_two)
-        return tuple_data
