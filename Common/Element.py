@@ -8,14 +8,12 @@ class BaserPage:
     # 启动浏览器，访问指定页面
     def open(self, url):
         self.driver.get(url)
-        # self.driver.maximize_window()
+        self.driver.maximize_window()
 
     # 定位元素
     def locator_element(self, locator, locators):
         if locators == None:
             locatorkey, locator_value = locator
-            print(locatorkey)
-            print(locator_value)
             return self.driver.find_element(locatorkey, locator_value)
         else:
             locatorkey, locator_value = locator

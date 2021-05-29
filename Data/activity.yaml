@@ -1,60 +1,65 @@
 Activity:
-    activitys:
-      activitys_menu:
-        # 活动管理
-        groud_activity: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/div/span)
-        # 拼团活动列表
-        groud_list: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[1])
-      # 拼团活动
-      grouds:
-        grouds_goods:
-          # 获取拼团表单
-          goods_numberone: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[2]/div/div[3]/table/tbody)
-          # 获取表单内的所有拼团商品
-          goods_number_tr: (xpath,tr)
-          goods_number_td: (xpath,td)
-          # 删除拼团的二次确认
-          grouds_delete: (xpath,/html/body/div[2]/div/div[3]/button[2]/span)
-        # 新建拼团活动数据
-        new_data:
-          # 设置成团有效时间
-          date_order_time: 1
-          # 设置成团人数
-          date_order_number: 2
-          # 模拟ctrl + a
-          groud_ctrl: a
-          start_end_times: 00:00:00
-        new_groud:
-          # 新建按钮
-          new: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button/span)
-          # 打开新建时间
-          time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1])
-          # 开始时间
-          start_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
-          # 结束日期
-          end_date: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[1]/div/input)
-          # 结束时间
-          end_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
-          # 确定
-          time_submit: (xpath,/html/body/div[2]/div[2]/button[2]/span)
-          # 成团有效时间
-          group_order_time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[2]/div/div/form/div/div/div/input)
-          # 成团人数
-          group_order_number: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[3]/div/div/form/div/div/div/input)
-          # 设置拼团价格
-          groud_price: (class name,el-input__inner)
-          # 打开选择要加入设置为拼团的商品
-          group_spulist: (class name,el-select)
-          # 商品列表
-          spu_listone: (xpath,/html/body/div[3]/div[1]/div[1]/ul)
-          # 通过下标选中商品
-          spu_listtwo: (xpath,li)
-          # 拿到页面拼团商品列表
-          group_spuone: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[5]/div/div/div[3]/table/tbody)
-          # 可以通过下标拿到拼团商品里的内容
-          group_sput_tr: (xpath,tr)
-          group_spu_td: (xpath,td)
-          # 保存按钮
-          new_submit: (class name,el-button)
-      # 转盘活动列表
-      turntable_list: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[9]/ul/li[2])
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    # 单个模块
+    menu_modules: (xpath,li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 活动管理
+    modus_name: 拼团管理
+    # 模拟ctrl + a
+    ctrl_a: a
+    # 开始时间
+    start_end_times: 00:00:00
+    # 设置成团有效时间
+    date_order_time: 1
+    # 设置成团人数
+    date_order_number: 2
+  # 拼团
+  group:
+    # 获取拼团表单
+    group_lis: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[2]/div/div[3]/table/tbody)
+    # 获取表单内的所有拼团商品
+    group_goods_tr: (xpath,tr)
+    group_goods_td: (xpath,td)
+    # 删除拼团的二次确认
+    group_delete: (xpath,/html/body/div[2]/div/div[3]/button[2]/span)
+  # 新建拼团活动数据
+  new_group:
+    # 新建按钮
+    new: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button)
+    # 打开新建时间
+    time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1])
+    # 开始时间
+    start_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
+    # 结束日期
+    end_date: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[1]/div/input)
+    # 结束时间
+    end_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
+    # 确定
+    time_submit: (xpath,/html/body/div[2]/div[2]/button[2]/span)
+    # 成团有效时间
+    group_order_time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[2]/div/div/form/div/div/div/input)
+    # 成团人数
+    group_order_number: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[3]/div/div/form/div/div/div/input)
+    # 设置拼团价格
+    groud_price: (class name,el-input__inner)
+    # 打开选择要加入设置为拼团的商品
+    group_spulist: (class name,el-select)
+    # 商品列表
+    spu_listone: (xpath,/html/body/div[3]/div[1]/div[1]/ul)
+    # 通过下标选中商品
+    spu_listtwo: (xpath,li)
+    # 拿到页面拼团商品列表
+    group_spuone: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[5]/div/div/div[3]/table/tbody)
+    # 可以通过下标拿到拼团商品里的内容
+    group_sput_tr: (xpath,tr)
+    group_spu_td: (xpath,td)
+    # 保存按钮
+    new_submit: (class name,el-button)
+

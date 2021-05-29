@@ -14,17 +14,19 @@ driver.find_element_by_xpath('//*[@id="app"]/div/div/div/div[3]/div/form/div[3]/
 # 首页列表
 tel_menu = driver.find_element_by_class_name('el-menu-vertical-demo').find_elements_by_xpath('li')
 for menu_name in tel_menu:
-    print(menu_name.text)
     if menu_name.text == '活动管理':
         menu_name.click()
-        a = ('xpath', 'li')
-        module_el = menu_name.find_element_by_class_name('el-menu').find_elements(a)
-        print(module_el)
-        print(type(module_el))
+        module_el = menu_name.find_element_by_class_name('el-menu').find_elements_by_xpath('li')
         for module_name in module_el:
-            print('-------', module_name.text)
             if module_name.text == '拼团管理':
                 module_name.click()
+                break
+        break
+driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button').click()
+new_group_lis = driver.find_element_by_class_name('el-form')
+new_group_data = new_group_lis.find_elements_by_xpath('div')
+print(len(new_group_data))
+
 
 sleep(5)
 driver.quit()

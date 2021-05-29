@@ -45,17 +45,14 @@ class Activity_TestRun(unittest.TestCase):
     @file_data('../Data/activity.yaml')
     def test_1_newgroup(self, **kwargs):
         """新建拼团活动"""
-        # 活动管理
-        activitys = kwargs['activitys']
-        # 拼团活动
-        activitys_menu = self.str_by_tuple(activitys['activitys_menu'])
-        grouds = activitys['grouds']
+        # 首页菜单
+        menu_path = self.str_by_tuple(kwargs['menu_path'])
+        # 拼团
+        group = self.str_by_tuple(kwargs['group'])
         # 新建拼团活动
-        grouds_goods = self.str_by_tuple(grouds['grouds_goods'])
-        new_groud = self.str_by_tuple(grouds['new_groud'])
-        new_data = grouds['new_data']
-        self.activity_case.new_groud(activitys_el=activitys_menu, groud_el=grouds_goods, group_data=new_data,
-                                     newgroud_el=new_groud)
+        new_group = self.str_by_tuple(kwargs['new_group'])
+        self.activity_case.new_groud(menu_path=menu_path, element_data=kwargs['Element_data'], group=group,
+                                     new_group=new_group)
         self.new_textone = self.activity_case.new_textone
         self.new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=self.new_textone, second=self.new_texttwo, msg='新建拼团失败！')
@@ -63,13 +60,9 @@ class Activity_TestRun(unittest.TestCase):
     @file_data('../Data/activity.yaml')
     def test_2_deletegroup(self, **kwargs):
         """删除拼团"""
-        # 活动管理
-        activitys = kwargs['activitys']
-        # 拼团活动
-        grouds = activitys['grouds']
-        # 新建拼团活动
-        grouds_goods = self.str_by_tuple(grouds['grouds_goods'])
-        self.activity_case.delete_group(groud_el=grouds_goods)
+        # 拼团
+        group = self.str_by_tuple(kwargs['group'])
+        self.activity_case.delete_group(groud_el=group)
         self.delete_text = self.activity_case.delete_text
         self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
 
