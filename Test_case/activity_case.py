@@ -1,9 +1,10 @@
 import unittest
 from selenium import webdriver
 from Page.activity import *
+from Page.Login import *
+from Test_case.test import *
 from selenium.webdriver.common.keys import Keys
 from ddt import ddt, file_data
-from Page.Login import *
 
 
 # import BeautifulReport
@@ -18,6 +19,7 @@ class Activity_TestRun(unittest.TestCase):
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
         self.activity_case = Activity(self.driver, Keys)
+        # self.test_case = Test(self.driver, Keys)
 
     # 传入yaml文件里的数据，通过循环然后把value值转成tuple
     def str_by_tuple(self, data):
@@ -39,6 +41,7 @@ class Activity_TestRun(unittest.TestCase):
         data = kwargs['data']
         login_el = self.str_by_tuple(kwargs['login'])
         self.Login_case.logins(username=data['username'], password=data['password'], url=data['url'], elemter=login_el)
+        # 断言校验
         test_text = self.Login_case.login_text
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
 
@@ -51,22 +54,39 @@ class Activity_TestRun(unittest.TestCase):
         group = self.str_by_tuple(kwargs['group'])
         # 新建拼团活动
         new_group = self.str_by_tuple(kwargs['new_group'])
+        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
         self.activity_case.new_groud(menu_path=menu_path, element_data=kwargs['Element_data'], group=group,
                                      new_group=new_group)
+        # 断言校验
         self.new_textone = self.activity_case.new_textone
         self.new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=self.new_textone, second=self.new_texttwo, msg='新建拼团失败！')
 
-    @file_data('../Data/activity.yaml')
-    def test_2_deletegroup(self, **kwargs):
-        """删除拼团"""
-        # 拼团
-        group = self.str_by_tuple(kwargs['group'])
-        self.activity_case.delete_group(groud_el=group)
-        self.delete_text = self.activity_case.delete_text
-        self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
+    @file_data('../Data/Goodsarea.yaml')
+    def test_2_addlayout_group(self, **kwargs):
+        menu_path = self.str_by_tuple(kwargs['menu_path'])
+        goods_area = self.str_by_tuple(kwargs['goods_area'])
+        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+        self.activity_case.add_group(goods_area=goods_area, element_data=kwargs['Element_data'])
+        # 断言校验
+        add_goods_text = self.activity_case.add_goods_text
+        self.assertEqual(first='True', second=add_goods_text, msg='拼团商品添加布局失败')
 
-    def test_3_over(self):
+
+    # @file_data('../Data/activity.yaml')
+    # def test_3_deletegroup(self, **kwargs):
+    #     """删除拼团"""
+    #     # 首页菜单
+    #     menu_path = self.str_by_tuple(kwargs['menu_path'])
+    #     # 拼团
+    #     group = self.str_by_tuple(kwargs['group'])
+    #     self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+    #     self.activity_case.delete_group(groud_el=group)
+    #     # 断言校验
+    #     self.delete_text = self.activity_case.delete_text
+    #     self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
+
+    def test_4_over(self):
         self.Login_case.close()
 
 

@@ -1,0 +1,29 @@
+Goodsarea:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    # 单个模块
+    menu_modules: (xpath,li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 商品区域管理
+    modus_name: 一排一商品区域
+    area_name: 拼团商品
+  # 商品区域管理
+  goods_area:
+    # 区域列表
+    area_lis_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    # 单个区域里边的商品列表
+    area_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[2]/div/div[3]/table/tbody)
+    # 单个区域里边添加商品的列表
+    add_goods_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/div[2]/div[1]/div/div[3]/table/tbody)
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+    area_button: (xpath,div/button)
+    add_goods_button: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/button)
+    add_goods_submit: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/div[3]/div/button[2])
+
