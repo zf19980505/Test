@@ -102,7 +102,7 @@ class Activity(BaserPage, metaclass=Singleton):
                 self.group_text = groups[3].text
                 # 点击删除按钮
                 sleep(3)
-                groups[8].click()
+                groups[8].find_element_by_xpath('div/button').click()
                 sleep(2)
                 # 点击删除的二次确认
                 self.click(locator=groud_el['group_delete'], locators=None)
