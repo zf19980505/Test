@@ -26,4 +26,6 @@ Goodsarea:
     area_button: (xpath,div/button)
     add_goods_button: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/button)
     add_goods_submit: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/div[3]/div/button[2])
+    delete_goods: (class name,el-message-box__btns)
+    delete_goods_submit: (xpath,button)
 
