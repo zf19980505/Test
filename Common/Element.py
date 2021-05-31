@@ -12,7 +12,7 @@ class BaserPage:
 
     # 定位元素
     def locator_element(self, locator, locators):
-        if locators == None:
+        if locators is None:
             locatorkey, locator_value = locator
             return self.driver.find_element(locatorkey, locator_value)
         else:

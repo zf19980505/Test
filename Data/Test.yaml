@@ -1,0 +1,20 @@
+Test:
+  weixin:
+    app:
+      desc: 微信
+    weixin_name:
+      name: com.tencent.mm:id/b8w
+    xcx:
+      name: com.tencent.mm:id/gam
+    xcx_class:
+      text: 分类
+    xcx_class_module:
+      text: 拼团分类
+    xcx_modules_name:
+      text: 拼团商品
+    xcx_group_good: E:/Python/TestWebProject/Data/log/拼团商品.png
+    xcx_page:
+      name: android.view.View
+  swipe:
+    weixin_swipe: (0.5,0.3,0.5,0.8)
+    xcx_swipe: (0.5,0.8,0.5,0.3)
