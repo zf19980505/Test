@@ -19,6 +19,7 @@ class Airtest_Server(ApiBaserPage):
         self.air_click(air_el['xcx_class_module'])
         sleep(2)
         self.air_click(air_el['xcx_modules_name'])
+        # 死循环只为了找到该拼团商品
         i = 0
         while True:
             i = i + 1
