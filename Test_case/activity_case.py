@@ -1,4 +1,7 @@
 import unittest
+from airtest.cli.parser import cli_setup
+from airtest.core import api
+from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 from selenium import webdriver
 from Page.activity import *
 from Page.Login import *
@@ -13,11 +16,17 @@ from ddt import ddt, file_data
 class Activity_TestRun(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        if not cli_setup():
+            cls.driver = api.auto_setup(__file__, logdir=None, devices=[
+                "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
+            ])
+        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
         cls.driver = webdriver.Chrome()
 
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
         self.activity_case = Activity(self.driver, Keys)
+        self.air_activity = Air_Activity(self.poco, api)
 
     # 传入yaml文件里的数据，通过循环然后把value值转成tuple
     def str_by_tuple(self, data):
@@ -29,6 +38,19 @@ class Activity_TestRun(unittest.TestCase):
             str_data_one, str_data_two = str_data.split(',')
             self.tuple_data = (str_data_one, str_data_two)
             self.lis_value.append(self.tuple_data)
+        self.zip_obj = zip(self.lis_key, self.lis_value)
+        self.dict_data = dict(self.zip_obj)
+        return self.dict_data
+
+    def str_szie(self, data):
+        self.lis_key = []
+        self.lis_value = []
+        for data_key, data_value in dict.items(data):
+            self.lis_key.append(data_key)
+            str_data = data_value[1: -1]
+            x1, y1, x2, y2 = str_data.split(',')
+            size = [x1, y1, x2, y2]
+            self.lis_value.append(size)
         self.zip_obj = zip(self.lis_key, self.lis_value)
         self.dict_data = dict(self.zip_obj)
         return self.dict_data
@@ -53,45 +75,54 @@ class Activity_TestRun(unittest.TestCase):
         # 新建拼团活动
         new_group = self.str_by_tuple(kwargs['new_group'])
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.activity_case.new_groud(menu_path=menu_path, element_data=kwargs['Element_data'], group=group,
+        self.activity_case.new_groud(element_data=kwargs['Element_data'], group=group,
                                      new_group=new_group)
         # 断言校验
         self.new_textone = self.activity_case.new_textone
         self.new_texttwo = self.activity_case.new_texttwo
         self.assertEqual(first=self.new_textone, second=self.new_texttwo, msg='新建拼团失败！')
 
-    @file_data('../Data/Goodsarea.yaml')
-    def test_2_add_areagoods(self, **kwargs):
-        menu_path = self.str_by_tuple(kwargs['menu_path'])
-        goods_area = self.str_by_tuple(kwargs['goods_area'])
-        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.activity_case.add_area_group(goods_area=goods_area, element_data=kwargs['Element_data'])
+    @file_data('../Data/Test.yaml')
+    def test_2_xcxgroup(self, **kwargs):
+        size = self.str_szie(kwargs['swipe'])
+        xcx_el_data = kwargs['xcx_el_data']
+        self.air_activity.xcx_group(air_el=kwargs['weixin'], air_swipe=size, air_data=xcx_el_data)
         # 断言校验
-        add_goods_text = self.activity_case.add_goods_text
-        self.assertEqual(first='True', second=add_goods_text, msg='拼团商品添加布局失败')
+        xcx_group_text = self.air_activity.xcx_group_text
+        self.assertEqual(first='True', second=xcx_group_text, msg='该商品不是拼团商品')
+
+    # @file_data('../Data/Goodsarea.yaml')
+    # def test_2_add_areagoods(self, **kwargs):
+    #     menu_path = self.str_by_tuple(kwargs['menu_path'])
+    #     goods_area = self.str_by_tuple(kwargs['goods_area'])
+    #     self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+    #     self.activity_case.add_area_group(goods_area=goods_area, element_data=kwargs['Element_data'])
+    #     # 断言校验
+    #     add_goods_text = self.activity_case.add_goods_text
+    #     self.assertEqual(first='True', second=add_goods_text, msg='拼团商品添加布局失败')
 
     @file_data('../Data/activity.yaml')
     def test_3_deletegroup(self, **kwargs):
         """删除拼团"""
         # 首页菜单
-        menu_path = self.str_by_tuple(kwargs['menu_path'])
+        # menu_path = self.str_by_tuple(kwargs['menu_path'])
         # 拼团
         group = self.str_by_tuple(kwargs['group'])
-        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+        # self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
         self.activity_case.delete_group(groud_el=group)
         # 断言校验
         self.delete_text = self.activity_case.delete_text
         self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
 
-    @file_data('../Data/Goodsarea.yaml')
-    def test_4_deleter_areagoods(self, **kwargs):
-        menu_path = self.str_by_tuple(kwargs['menu_path'])
-        goods_area = self.str_by_tuple(kwargs['goods_area'])
-        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.activity_case.deleter_area_group(goods_area=goods_area, element_data=kwargs['Element_data'])
-        # 断言校验
-        delete_goods_text = self.activity_case.delete_goods_text
-        self.assertEqual(first='True', second=delete_goods_text, msg='从布局里删除拼团商品失败')
+    # @file_data('../Data/Goodsarea.yaml')
+    # def test_4_deleter_areagoods(self, **kwargs):
+    #     menu_path = self.str_by_tuple(kwargs['menu_path'])
+    #     goods_area = self.str_by_tuple(kwargs['goods_area'])
+    #     self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+    #     self.activity_case.deleter_area_group(goods_area=goods_area, element_data=kwargs['Element_data'])
+    #     # 断言校验
+    #     delete_goods_text = self.activity_case.delete_goods_text
+    #     self.assertEqual(first='True', second=delete_goods_text, msg='从布局里删除拼团商品失败')
 
     def test_5_over(self):
         self.Login_case.close()

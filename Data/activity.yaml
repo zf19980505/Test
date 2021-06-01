@@ -12,6 +12,8 @@ Activity:
     modus: li
     moules_lis_name: 活动管理
     modus_name: 拼团管理
+    # 取固定的拼团商品
+    group_name: SPU2021536910001
     # 模拟ctrl + a
     ctrl_a: a
     # 开始时间

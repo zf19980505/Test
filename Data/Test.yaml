@@ -12,9 +12,12 @@ Test:
       text: 拼团分类
     xcx_modules_name:
       text: 拼团商品
-    xcx_group_good: E:/Python/TestWebProject/Data/log/拼团商品.png
     xcx_page:
       name: android.view.View
   swipe:
     weixin_swipe: (0.5,0.3,0.5,0.8)
     xcx_swipe: (0.5,0.8,0.5,0.3)
+  xcx_el_data:
+    xcx_name: AR试鞋
+    xcx_group_good: E:/Python/TestWebProject/Data/log/拼团商品.png
+    xcx_group_buttom: E:/Python/TestWebProject/Data/log/拼团按钮.png
