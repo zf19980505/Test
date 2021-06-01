@@ -6,6 +6,8 @@ from selenium import webdriver
 from Page.activity import *
 from Page.Login import *
 from selenium.webdriver.common.keys import Keys
+import requests
+import configparser
 from ddt import ddt, file_data
 
 
@@ -22,11 +24,16 @@ class Activity_TestRun(unittest.TestCase):
             ])
         cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
         cls.driver = webdriver.Chrome()
+        conf = configparser.ConfigParser()
+        conf.read('../Confing/request_confing.ini')
+        cls.url = conf.get('DEFAULT', 'url')
 
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
+        self.Req_login = Req_login(requests)
         self.activity_case = Activity(self.driver, Keys)
         self.air_activity = Air_Activity(self.poco, api)
+        self.Req_Activity = Req_Activity(requests)
 
     # 传入yaml文件里的数据，通过循环然后把value值转成tuple
     def str_by_tuple(self, data):
@@ -60,10 +67,16 @@ class Activity_TestRun(unittest.TestCase):
         """"登录"""
         data = kwargs['data']
         login_el = self.str_by_tuple(kwargs['login'])
-        self.Login_case.logins(username=data['username'], password=data['password'], url=data['url'], elemter=login_el)
+        url = kwargs['url'] + data['el_login_path']
+        req_login = kwargs['url'] + data['req_login_path']
+        self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
+        self.Req_login.req_login(url=req_login, data=kwargs['req_login_data'])
         # 断言校验
         test_text = self.Login_case.login_text
+        username = self.Req_login.username
+        self.token = self.Req_login.token
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
+        self.assertEqual(first=data['username'], second=username, msg='登录成功')
 
     @file_data('../Data/activity.yaml')
     def test_1_newgroup(self, **kwargs):
@@ -104,15 +117,20 @@ class Activity_TestRun(unittest.TestCase):
     @file_data('../Data/activity.yaml')
     def test_3_deletegroup(self, **kwargs):
         """删除拼团"""
-        # 首页菜单
-        # menu_path = self.str_by_tuple(kwargs['menu_path'])
+        # todo 接口删除
+        req_grouop = kwargs['req_grouop']
+        path = req_grouop['path']
+        data = req_grouop['data']
+        data['public_data']['spucode'] = self.new_textone
+        url = self.url + path['gruop_goods_lis_path']
+        self.Req_Activity.gruop_goods_lis(url=url, params=data['gruop_goods_lis_data'], public_data=data['public_data'])
+        # todo UI页面删除删除
         # 拼团
-        group = self.str_by_tuple(kwargs['group'])
-        # self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.activity_case.delete_group(groud_el=group)
-        # 断言校验
-        self.delete_text = self.activity_case.delete_text
-        self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
+        # group = self.str_by_tuple(kwargs['group'])
+        # self.activity_case.delete_group(groud_el=group)
+        # # 断言校验
+        # self.delete_text = self.activity_case.delete_text
+        # self.assertEqual(first='true', second=self.activity_case.delete_text, msg='删除拼团失败！')
 
     # @file_data('../Data/Goodsarea.yaml')
     # def test_4_deleter_areagoods(self, **kwargs):

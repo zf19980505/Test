@@ -1,4 +1,5 @@
 from Common.Element import *
+from Common.req_Element import *
 from time import sleep
 
 
@@ -31,3 +32,14 @@ class Login_server(BaserPage):
     # 关闭浏览器
     def close(self):
         self.quit()
+
+
+class Req_login(BaserRequest):
+    def req_login(self, url, data):
+        res = self.post(url=url, data=data)
+        for key, val in dict.items(eval(res)):
+            if key == 'token':
+                self.token = {'Authorization': val}
+            elif key == 'username':
+                self.username = val
+        self.username = 'False'

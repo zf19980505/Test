@@ -64,4 +64,14 @@ Activity:
     group_spu_td: (xpath,td)
     # 保存按钮
     new_submit: (class name,el-button)
+  req_grouop:
+    path:
+      gruop_goods_lis_path: /group/list
+    data:
+      public_data:
+        groupList: groupList
+      gruop_goods_lis_data:
+        p: 1
+
+
 

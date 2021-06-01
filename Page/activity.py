@@ -1,5 +1,6 @@
 from Common.Air_Element import *
 from Common.Element import *
+from Common.req_Element import *
 from airtest.core.api import *
 from time import sleep
 import random
@@ -223,3 +224,18 @@ class Air_Activity(ApiBaserPage, metaclass=Singleton):
                 break
             else:
                 self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
+
+
+class Req_Activity(BaserRequest, metaclass=Singleton):
+    # 拿到当前拼团列表里的所有拼团
+    def gruop_goods_lis(self, url, params, public_data):
+        res = self.get(url=url, params=params)
+        for key, val in dict.items(eval(res.text)):
+            if key == public_data['groupList']:
+                for two_val in val:
+                    if two_val['spu_code'] == public_data['spucode']:
+                        self.group_id = two_val['id']
+                        return self.group_id
+
+    def delete_group_good(self):
+        pass
