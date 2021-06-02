@@ -67,6 +67,7 @@ Activity:
   req_grouop:
     path:
       gruop_goods_lis_path: /group/list
+      delete_group_path: /group/style
     data:
       public_data:
         groupList: groupList

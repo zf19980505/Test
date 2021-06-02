@@ -235,7 +235,11 @@ class Req_Activity(BaserRequest, metaclass=Singleton):
                 for two_val in val:
                     if two_val['spu_code'] == public_data['spucode']:
                         self.group_id = two_val['id']
-                        return self.group_id
 
-    def delete_group_good(self):
-        pass
+    def delete_group_good(self, url, params):
+        res = self.delete(url=url, params=params)
+        delete_res = eval(res.text)
+        if delete_res['code'] == 500:
+            self.delete_text = 'False'
+        else:
+            self.delete_text = 'True'

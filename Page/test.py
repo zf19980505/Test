@@ -28,12 +28,19 @@ class Req_login(BaserRequest):
                 self.username = val
         self.username = 'False'
 
-    def gruop_goods_lis(self, url, params, public_data):
+    def test_group_lis(self, url, params, public_data):
         res = self.get(url=url, params=params)
         for key, val in dict.items(eval(res.text)):
             if key == public_data['groupList']:
                 for two_val in val:
-                    print(two_val)
-                    if two_val['spu_code'] == 'SPU2021536910001':
+                    if two_val['spu_code'] == public_data['spucode']:
                         self.group_id = two_val['id']
+                        return self.group_id
 
+    def test_dele_group(self, url, params):
+        res = self.delete(url=url, params=params)
+        delete_res = eval(res.text)
+        if delete_res['code'] == 500:
+            self.delete_text = 'False'
+        else:
+            self.delete_text = 'True'

@@ -12,7 +12,7 @@ from ddt import ddt, file_data
 @ddt
 class Air_test(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         #     cls.token = None
         #     conf = configparser.ConfigParser()
         #     conf.read('../Confing/request_confing.ini')
@@ -28,6 +28,7 @@ class Air_test(unittest.TestCase):
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
         cls.url = conf.get('DEFAULT', 'url')
+        cls.group_id = None
 
     def setUp(self):
         self.Req_login = Req_login(requests)
@@ -47,7 +48,7 @@ class Air_test(unittest.TestCase):
 
     # @file_data('../Data/login.yaml')
     @file_data('../Data/activity.yaml')
-    def test_login(self, **kwargs):
+    def test_0_login(self, **kwargs):
         # data = kwargs['data']
         # url = kwargs['url'] + data['req_login_path']
         # self.Req_login.req_login(url=url, data=kwargs['req_login_data'])
@@ -57,10 +58,27 @@ class Air_test(unittest.TestCase):
         req_grouop = kwargs['req_grouop']
         path = req_grouop['path']
         data = req_grouop['data']
-        data['public_data']['spucode'] = 'test'
-        print(data['public_data'])
+        data['public_data']['spucode'] = 'SPU2021536910001'
         url = self.url + path['gruop_goods_lis_path']
-        self.Req_login.gruop_goods_lis(url=url, params=data['gruop_goods_lis_data'], public_data=data['public_data'])
+        # delete_url = self.url + path['delete_group_path']
+        self.Req_login.test_group_lis(url=url, params=data['gruop_goods_lis_data'], public_data=data['public_data'])
+        Air_test.group_id = self.Req_login.group_id
+        self.assertEqual(first='true', second='true', msg='测试')
+        # req_grouop['data']['delte_group_data'] = {'id': group_id}
+        # self.Req_login.test_dele_group(url=delete_url, params=data['delte_group_data'])
+        # delete_text = self.Req_login.delete_text
+        # self.assertEqual(first='True', second=delete_text, msg='拼团删除失败，服务器报错')
+
+    @file_data('../Data/activity.yaml')
+    def test_1_dele(self, **kwargs):
+        req_grouop = kwargs['req_grouop']
+        path = req_grouop['path']
+        data = req_grouop['data']
+        url = self.url + path['delete_group_path']
+        req_grouop['data']['delte_group_data'] = {'id': Air_test.group_id}
+        self.Req_login.test_dele_group(url=url, params=data['delte_group_data'])
+        delete_text = self.Req_login.delete_text
+        self.assertEqual(first='True', second=delete_text, msg='拼团删除失败，服务器报错')
 
 
 if __name__ == '__main__':

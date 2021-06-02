@@ -10,8 +10,6 @@ class BaserRequest:
     def post(self, url, headers=None, params=None, data=None):
         return self.req_driver.post(url=url, headers=headers, params=params, data=data)
 
-
-
-
-
-
+    # 定义DELETE请求
+    def delete(self, url, headers=None, params=None, data=None):
+        return self.req_driver.delete(url=url, headers=headers, params=params, data=data)
