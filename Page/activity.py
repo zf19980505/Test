@@ -64,10 +64,9 @@ class Activity(BaserPage, metaclass=Singleton):
         for group_spus in group_goods_lis:
             locatorkeys, locator_values = new_group['group_spu_td']
             group_spu = group_spus.find_elements(locatorkeys, locator_values)
-            i = 0
+
             while True:
                 # 死循环为了拿到大于供货价小于零售价的拼团价格
-                i = i + 1
                 # 根据供货价和零售价生成拼团价格，拼团价格取两个价格中间
                 groud_price = random.uniform(float(group_spu[4].text), float(group_spu[5].text))
                 # 拼团价格包留两位小数
@@ -79,6 +78,7 @@ class Activity(BaserPage, metaclass=Singleton):
                     price_keys, price_values = new_group['groud_price']
                     group_spu[6].find_element(price_keys, price_values).send_keys(str(groud_prices))
                     break
+
             # 拿到该拼团商品的spu
             self.new_textone = group_spu[0].text
         self.click(locator=new_group['new_submit'], locators=None)
@@ -96,6 +96,7 @@ class Activity(BaserPage, metaclass=Singleton):
         goods_numone = self.locator_element(locator=groud_el['group_lis'], locators=groud_el['group_goods_tr'])
         # 把元素td拆出来，方便定位方法直接使用
         self.delete_group_key, self.delete_group_value = groud_el['group_goods_td']
+
         for group_lis in goods_numone:
             groups = group_lis.find_elements(self.delete_group_key, self.delete_group_value)
             if self.new_textone == groups[3].text:
@@ -108,6 +109,7 @@ class Activity(BaserPage, metaclass=Singleton):
                 self.click(locator=groud_el['group_delete'], locators=None)
                 sleep(3)
                 break
+
         # 重新获取当前拼团列表里的所有拼团商品以做断言校验
         again_group_lis = self.locator_element(locator=groud_el['group_lis'], locators=groud_el['group_goods_tr'])
         for again_groups in again_group_lis:
@@ -123,12 +125,14 @@ class Activity(BaserPage, metaclass=Singleton):
         area_button_key, area_button_val = goods_area['area_button']
         # 通过循环tr拿到单行的列表的内容
         area_lis_tr = self.locator_element(locator=goods_area['area_lis_tbody'], locators=goods_area['public_tr'])
+
         for lis_tr in area_lis_tr:
             area_td = lis_tr.find_elements(td_key, td_val)
             if area_td[1].text == element_data['area_name']:
                 area_buttons = area_td[3].find_elements(area_button_key, area_button_val)
                 area_buttons[2].click()
                 break
+
         area_tr = self.locator_element(locator=goods_area['area_tbody'], locators=goods_area['public_tr'])
         # 通过循环tr拿到区域列表单行的列表的内容
         for tr in area_tr:
@@ -137,6 +141,7 @@ class Activity(BaserPage, metaclass=Singleton):
                 print('该拼团商品已存在')
                 self.add_goods_text = 'True'
                 return self.add_goods_text
+
         self.click(locator=goods_area['add_goods_button'], locators=None)
         # 通过循环tr拿到添加商品列表的内容
         add_goods_tbody = self.locator_element(locator=goods_area['add_goods_tbody'], locators=goods_area['public_tr'])
@@ -171,6 +176,7 @@ class Activity(BaserPage, metaclass=Singleton):
                 area_buttons = area_td[3].find_elements(area_button_key, area_button_val)
                 area_buttons[2].click()
                 break
+
         area_tr = self.locator_element(locator=goods_area['area_tbody'], locators=goods_area['public_tr'])
         # 通过循环tr拿到区域列表单行的列表的内容
         for tr in area_tr:
@@ -194,6 +200,7 @@ class Activity(BaserPage, metaclass=Singleton):
                         print('删除拼团商品添加失败')
                         self.delete_goods_text = 'False'
                         return self.delete_goods_text
+
         self.delete_goods_text = 'True'
 
 
@@ -210,6 +217,7 @@ class Air_Activity(ApiBaserPage, metaclass=Singleton):
             if i.get_text() == air_data['xcx_name']:
                 i.click()
                 break
+
         while True:
             if self.api_exists(api_locator=air_data['xcx_group_good']):
                 self.api_touch(api_locator=air_data['xcx_group_good'])
@@ -224,6 +232,11 @@ class Air_Activity(ApiBaserPage, metaclass=Singleton):
                 break
             else:
                 self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
+
+    # 小程序下单支付
+    def xcx_group_pay(self, air_el, air_swipe, air_data):
+        self.poco_click(air_locator=air_data['xcx_group_buttom'])
+        self.poco_click(air_locator=air_data['xcx_group_pay_buttom'])
 
 
 class Req_Activity(BaserRequest, metaclass=Singleton):

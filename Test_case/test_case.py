@@ -5,7 +5,6 @@ import unittest
 from Page.test import *
 import requests
 import configparser
-import json
 from ddt import ddt, file_data
 
 
@@ -13,25 +12,18 @@ from ddt import ddt, file_data
 class Air_test(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        #     cls.token = None
-        #     conf = configparser.ConfigParser()
-        #     conf.read('../Confing/request_confing.ini')
-        #     cls.headers = conf.get('DEFAULT', 'headers')
-        #     cls.dict_heardes = dict(cls.headers)
-        #     print(cls.dict_heardes)
-        #     print(type(cls.dict_heardes))
-        #     if not cli_setup():
-        #         cls.driver = api.auto_setup(__file__, logdir=None, devices=[
-        #             "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
-        #         ])
-        #     cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-        conf = configparser.ConfigParser()
-        conf.read('../Confing/request_confing.ini')
-        cls.url = conf.get('DEFAULT', 'url')
-        cls.group_id = None
+        if not cli_setup():
+            cls.driver = api.auto_setup(__file__, logdir=None, devices=[
+                "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
+            ])
+        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
+        # conf = configparser.ConfigParser()
+        # conf.read('../Confing/request_confing.ini')
+        # cls.url = conf.get('DEFAULT', 'url')
+        # cls.group_id = None
 
     def setUp(self):
-        self.Req_login = Req_login(requests)
+        self.Airtest_Server = Airtest_Server(self.poco, api)
 
     def str_szie(self, data):
         self.lis_key = []
@@ -46,39 +38,19 @@ class Air_test(unittest.TestCase):
         self.dict_data = dict(self.zip_obj)
         return self.dict_data
 
-    # @file_data('../Data/login.yaml')
-    @file_data('../Data/activity.yaml')
-    def test_0_login(self, **kwargs):
-        # data = kwargs['data']
-        # url = kwargs['url'] + data['req_login_path']
-        # self.Req_login.req_login(url=url, data=kwargs['req_login_data'])
-        # username = self.Req_login.username
-        # self.token = self.Req_login.token
-        # self.assertEqual(first=data['username'], second=username, msg='登录成功')
-        req_grouop = kwargs['req_grouop']
-        path = req_grouop['path']
-        data = req_grouop['data']
-        data['public_data']['spucode'] = 'SPU2021536910001'
-        url = self.url + path['gruop_goods_lis_path']
-        # delete_url = self.url + path['delete_group_path']
-        self.Req_login.test_group_lis(url=url, params=data['gruop_goods_lis_data'], public_data=data['public_data'])
-        Air_test.group_id = self.Req_login.group_id
-        self.assertEqual(first='true', second='true', msg='测试')
-        # req_grouop['data']['delte_group_data'] = {'id': group_id}
-        # self.Req_login.test_dele_group(url=delete_url, params=data['delte_group_data'])
-        # delete_text = self.Req_login.delete_text
-        # self.assertEqual(first='True', second=delete_text, msg='拼团删除失败，服务器报错')
+    @file_data('../Data/xcx_group.yaml')
+    def test_0(self, **kwargs):
+        size = self.str_szie(kwargs['swipe'])
+        xcx_el_data = kwargs['xcx_el_data']
+        self.Airtest_Server.test_wx(air_el=kwargs['weixin'], air_swipe=size, air_data=xcx_el_data)
+        # 断言校验
+        xcx_group_text = self.Airtest_Server.xcx_group_text
+        self.assertEqual(first='True', second=xcx_group_text, msg='该商品不是拼团商品')
 
-    @file_data('../Data/activity.yaml')
-    def test_1_dele(self, **kwargs):
-        req_grouop = kwargs['req_grouop']
-        path = req_grouop['path']
-        data = req_grouop['data']
-        url = self.url + path['delete_group_path']
-        req_grouop['data']['delte_group_data'] = {'id': Air_test.group_id}
-        self.Req_login.test_dele_group(url=url, params=data['delte_group_data'])
-        delete_text = self.Req_login.delete_text
-        self.assertEqual(first='True', second=delete_text, msg='拼团删除失败，服务器报错')
+    @file_data('../Data/xcx_group.yaml')
+    def test_1(self, **kwargs):
+        xcx_el_data = kwargs['xcx_el_data']
+        self.Airtest_Server.test_airpay(air_data=xcx_el_data)
 
 
 if __name__ == '__main__':

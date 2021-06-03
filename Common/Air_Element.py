@@ -36,3 +36,6 @@ class ApiBaserPage:
 
     def api_exists(self, api_locator):
         return self.air_api.exists(self.air_api.Template(r'' + api_locator))
+
+    def api_keyevent(self, api_data):
+        self.air_api.keyevent(api_data)

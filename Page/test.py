@@ -5,17 +5,48 @@ from airtest.core.api import *
 
 
 class Airtest_Server(ApiBaserPage):
-    def test_wx(self, air_el, air_data):
+    def test_wx(self, air_el, air_swipe, air_data):
         self.poco_click(air_locator=air_el['app'])
-        self.poco_swipe(air_locator=air_el['weixin_name'], value=air_data['weixin_swipe'])
+        self.poco_swipe(air_locator=air_el['weixin_name'], value=air_swipe['weixin_swipe'])
         sleep(2)
         xcx = self.poco_element(air_locator=air_el['xcx'])
         sleep(2)
         for i in xcx:
             i.get_text()
-            if i.get_text() == 'AR试鞋':
+            if i.get_text() == air_data['xcx_name']:
                 i.click()
                 break
+
+        while True:
+            if self.api_exists(api_locator=air_data['xcx_group_good']):
+                self.api_touch(api_locator=air_data['xcx_group_good'])
+                # 循环20秒等待找到元素
+                for i in range(10):
+                    if self.api_exists(api_locator=air_data['xcx_group_buttom']):
+                        self.xcx_group_text = 'True'
+                        return self.xcx_group_text
+                    else:
+                        sleep(2)
+                self.xcx_group_text = 'Fales'
+                break
+            else:
+                self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
+
+    def test_airpay(self, air_data):
+        self.api_touch(api_locator=air_data['xcx_group_buttom'])
+        self.api_touch(api_locator=air_data['xcx_group_pay_buttom'])
+        self.api_touch(api_locator=air_data['xcx_group_pay_submit'])
+        if self.api_exists(api_locator=air_data['xcx_wx_pay']):
+            keyboard_Lis = list(air_data['xcx_keyboard'].split(','))
+            for keyboard_data in keyboard_Lis:
+                self.api_keyevent(keyboard_data)
+        for i in range(10):
+            if self.api_exists(api_locator=air_data['xcx_group_pay_complete']):
+                self.api_touch(air_data['xcx_group_pay_complete'])
+                sleep(5)
+                break
+            else:
+                sleep(1)
 
 
 class Req_login(BaserRequest):

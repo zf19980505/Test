@@ -18,11 +18,11 @@ from ddt import ddt, file_data
 class Activity_TestRun(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # if not cli_setup():
-        #     cls.driver = api.auto_setup(__file__, logdir=None, devices=[
-        #         "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
-        #     ])
-        # cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
+        if not cli_setup():
+            cls.driver = api.auto_setup(__file__, logdir=None, devices=[
+                "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
+            ])
+        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
         cls.driver = webdriver.Chrome()
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
@@ -36,7 +36,7 @@ class Activity_TestRun(unittest.TestCase):
         self.Login_case = Login_server(self.driver, Keys)
         self.Req_login = Req_login(requests)
         self.activity_case = Activity(self.driver, Keys)
-        # self.air_activity = Air_Activity(self.poco, api)
+        self.air_activity = Air_Activity(self.poco, api)
         self.Req_Activity = Req_Activity(requests)
 
     # 传入yaml文件里的数据，通过循环然后把value值转成tuple
@@ -94,7 +94,7 @@ class Activity_TestRun(unittest.TestCase):
         Activity_TestRun.group_good_spu = self.activity_case.new_texttwo
         self.assertEqual(first=new_textone, second=self.group_good_spu, msg='新建拼团失败！')
 
-    @file_data('../Data/Test.yaml')
+    @file_data('../Data/xcx_group.yaml')
     def test_2_xcxgroup(self, **kwargs):
         size = self.str_szie(kwargs['swipe'])
         xcx_el_data = kwargs['xcx_el_data']
@@ -102,6 +102,10 @@ class Activity_TestRun(unittest.TestCase):
         # 断言校验
         xcx_group_text = self.air_activity.xcx_group_text
         self.assertEqual(first='True', second=xcx_group_text, msg='该商品不是拼团商品')
+
+    @file_data('../Data/xcx_group.yaml')
+    def test_3_xcx_group_ay(self, **kwargs):
+        pass
 
     # @file_data('../Data/Goodsarea.yaml')
     # def test_2_add_areagoods(self, **kwargs):
@@ -116,7 +120,7 @@ class Activity_TestRun(unittest.TestCase):
     @file_data('../Data/activity.yaml')
     def test_3_deletegroup(self, **kwargs):
         """删除拼团"""
-        # todo 接口删除
+        # todo 接口直接请求删除
         req_grouop = kwargs['req_grouop']
         path = req_grouop['path']
         data = req_grouop['data']
@@ -128,7 +132,7 @@ class Activity_TestRun(unittest.TestCase):
         self.Req_Activity.delete_group_good(url=delete_url, params=data['delte_group_data'])
         delete_text = self.Req_Activity.delete_text
         self.assertEqual(first='True', second=delete_text, msg='拼团删除失败，服务器报错')
-        # todo UI页面删除删除
+        # todo UI页面点击删除按钮删除
         # 拼团
         # group = self.str_by_tuple(kwargs['group'])
         # self.activity_case.delete_group(groud_el=group)
