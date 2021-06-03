@@ -17,13 +17,14 @@ class Air_test(unittest.TestCase):
                 "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
             ])
         cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-        # conf = configparser.ConfigParser()
-        # conf.read('../Confing/request_confing.ini')
-        # cls.url = conf.get('DEFAULT', 'url')
-        # cls.group_id = None
+        conf = configparser.ConfigParser()
+        conf.read('../Confing/request_confing.ini')
+        cls.url = conf.get('DEFAULT', 'url')
+        cls.group_id = None
 
     def setUp(self):
         self.Airtest_Server = Airtest_Server(self.poco, api)
+        self.Req_login = Req_login(requests)
 
     def str_szie(self, data):
         self.lis_key = []
@@ -50,7 +51,9 @@ class Air_test(unittest.TestCase):
     @file_data('../Data/xcx_group.yaml')
     def test_1(self, **kwargs):
         xcx_el_data = kwargs['xcx_el_data']
+        xcx_order_url = self.url
         self.Airtest_Server.test_airpay(air_data=xcx_el_data)
+        self.Req_login.test_getuser_order(url=xcx_order_url)
 
 
 if __name__ == '__main__':

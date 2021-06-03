@@ -207,17 +207,6 @@ class Activity(BaserPage, metaclass=Singleton):
 class Air_Activity(ApiBaserPage, metaclass=Singleton):
     # 打开小程序查看该商品是否是拼团商品
     def xcx_group(self, air_el, air_swipe, air_data):
-        self.poco_click(air_locator=air_el['app'])
-        self.poco_swipe(air_locator=air_el['weixin_name'], value=air_swipe['weixin_swipe'])
-        sleep(2)
-        xcx = self.poco_element(air_locator=air_el['xcx'])
-        sleep(2)
-        for i in xcx:
-            i.get_text()
-            if i.get_text() == air_data['xcx_name']:
-                i.click()
-                break
-
         while True:
             if self.api_exists(api_locator=air_data['xcx_group_good']):
                 self.api_touch(api_locator=air_data['xcx_group_good'])
@@ -234,9 +223,23 @@ class Air_Activity(ApiBaserPage, metaclass=Singleton):
                 self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
 
     # 小程序下单支付
-    def xcx_group_pay(self, air_el, air_swipe, air_data):
-        self.poco_click(air_locator=air_data['xcx_group_buttom'])
-        self.poco_click(air_locator=air_data['xcx_group_pay_buttom'])
+    def xcx_group_pay(self, air_data):
+        self.api_touch(api_locator=air_data['xcx_group_buttom'])
+        self.api_touch(api_locator=air_data['xcx_group_pay_buttom'])
+        self.api_touch(api_locator=air_data['xcx_group_pay_submit'])
+        if self.api_exists(api_locator=air_data['xcx_wx_pay']):
+            keyboard_Lis = list(air_data['xcx_keyboard'].split(','))
+            for keyboard_data in keyboard_Lis:
+                self.api_keyevent(keyboard_data)
+
+        # 循环10秒点击支付完成
+        for i in range(10):
+            if self.api_exists(api_locator=air_data['xcx_group_pay_complete']):
+                self.api_touch(air_data['xcx_group_pay_complete'])
+                sleep(5)
+                break
+            else:
+                sleep(1)
 
 
 class Req_Activity(BaserRequest, metaclass=Singleton):

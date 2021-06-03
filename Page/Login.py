@@ -1,4 +1,5 @@
 from Common.Element import *
+from Common.Air_Element import *
 from Common.req_Element import *
 from time import sleep
 
@@ -32,6 +33,33 @@ class Login_server(BaserPage):
     # 关闭浏览器
     def close(self):
         self.quit()
+
+
+class Air_Loging(ApiBaserPage):
+    def xcx_login(self, air_el, air_swipe, air_data):
+        self.poco_click(air_locator=air_el['app'])
+        self.poco_swipe(air_locator=air_el['weixin_name'], value=air_swipe['weixin_swipe'])
+        sleep(2)
+        xcx = self.poco_element(air_locator=air_el['xcx_lis'])
+        sleep(2)
+        for i in xcx:
+            i.get_text()
+            if i.get_text() == air_data['xcx_name']:
+                i.click()
+                break
+
+        self.poco_click(air_locator=air_el['xcx_class'])
+        self.poco_click(air_locator=air_el['xcx_login_button'])
+        self.poco_click(air_locator=air_el['xcx_login_submit'])
+        # 循环10秒查看是否登录
+        for i in range(10):
+            sleep(1)
+            if self.api_exists(api_locator=air_data['xcx_notlogin']):
+                self.xcx_login_text = 'False'
+            else:
+                self.xcx_login_text = 'True'
+                self.poco_click(air_locator=air_el['xcx_home_page'])
+                return self.xcx_login_text
 
 
 class Req_login(BaserRequest):

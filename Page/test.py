@@ -75,3 +75,6 @@ class Req_login(BaserRequest):
             self.delete_text = 'False'
         else:
             self.delete_text = 'True'
+
+    def test_getuser_order(self, url):
+        pass

@@ -1,11 +1,5 @@
-Test:
-  weixin:
-    app:
-      desc: 微信
-    weixin_name:
-      name: com.tencent.mm:id/b8w
-    xcx:
-      name: com.tencent.mm:id/gam
+Group:
+  xcx:
     xcx_class:
       text: 分类
     xcx_class_module:
@@ -15,15 +9,13 @@ Test:
     xcx_page:
       name: android.view.View
   swipe:
-    weixin_swipe: (0.5,0.3,0.5,0.8)
     xcx_swipe: (0.5,0.8,0.5,0.3)
   xcx_el_data:
-    xcx_name: AR试鞋
     xcx_group_good: E:/Python/TestWebProject/Data/log/拼团商品.png
     xcx_group_buttom: E:/Python/TestWebProject/Data/log/拼团按钮.png
     # airtest截图支付
     xcx_group_pay_buttom: E:/Python/TestWebProject/Data/log/立即购买按钮.png
     xcx_group_pay_submit: E:/Python/TestWebProject/Data/log/提交订单按钮.png
-    xcx_group_pay_complete: E:/Python/TestWebProject/Data/log/微信支付完成.png
     xcx_wx_pay: E:/Python/TestWebProject/Data/log/微信支付.png
+    xcx_group_pay_complete: E:/Python/TestWebProject/Data/log/微信支付完成.png
     xcx_keyboard: KEYCODE_1,KEYCODE_9,KEYCODE_9,KEYCODE_8,KEYCODE_5,KEYCODE_5

@@ -1,0 +1,49 @@
+Coupons:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    # 单个模块
+    menu_modules: (xpath,li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 优惠卷管理
+    modus_name: 优惠卷列表
+    coupons_name: 测试优惠卷
+  coupons_lis:
+    # 获取优惠卷表单
+    coupons_tbody: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
+    # 通过公共的tr,td获取表单内的所有优惠卷
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+  new_coupons:
+    # 新建按钮
+    new: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/button)
+    # 输入框
+    coupons_name: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[1]/div/div/input)
+    # 满多少减多少
+    full_money: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[2]/div/div/input)
+    subtract_money: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[3]/div/div/input)
+    # 优惠卷有效期
+    coupons_datetype_input: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[4]/div/div/div/input)
+    coupons_date_type: (xpath,/html/body/div[3]/div[1]/div[1]/ul)
+    # 打开新建时间
+    time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[5]/div/div/input[1])
+    # 开始时间
+    start_time: (xpath,/html/body/div[4]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
+    # 结束日期
+    end_date: (xpath,/html/body/div[4]/div[1]/div/div[1]/span[3]/span[1]/div/input)
+    # 结束时间
+    end_time: (xpath,/html/body/div[4]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
+    # 确定
+    time_submit: (xpath,/html/body/div[4]/div[2]/button[2]/span)
+    # 动态日期:领卷后N天后生效
+    dynamic_time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[5]/div/div/input)
+    # 动态日期：领卷后有效持续天数
+    continue_time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[5]/div/div/input)
+
+
+
