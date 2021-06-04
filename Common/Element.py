@@ -20,10 +20,6 @@ class BaserPage:
             locatorkeys, locator_values = locators
             return self.driver.find_element(locatorkey, locator_value).find_elements(locatorkeys, locator_values)
 
-    def locator_elements(self, locator):
-        locatorkey, locator_value = locator
-        return self.driver.find_elements(locatorkey, locator_value)
-
     def send_key(self, locator, locators, value):
         self.locator_element(locator, locators).send_keys(value)
 

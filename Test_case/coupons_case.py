@@ -2,6 +2,7 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import configparser
+import datetime
 from ddt import ddt, file_data
 from Page.Login import *
 
@@ -38,10 +39,13 @@ class Coupons(unittest.TestCase):
         coupons = self.util.str_by_tuple(kwargs['coupons_lis'])
         # 新建优惠卷
         new_coupons = self.util.str_by_tuple(kwargs['new_coupons'])
+        Element_data = kwargs['Element_data']
+        # 获取明天日期
+        end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        Element_data['end_dates'] = end_dates
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.activity_case.new_groud(element_data=kwargs['Element_data'], coupons=coupons,
+        self.activity_case.new_groud(element_data=Element_data, coupons=coupons,
                                      new_coupons=new_coupons)
-
 
     def test_5_over(self):
         self.Login_case.close()
