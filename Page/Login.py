@@ -21,11 +21,13 @@ class Login_server(BaserPage):
                                             locators=menu_path['menu_modules'])
         for modus_lis in menu_modules:
             if modus_lis.text == element_data['moules_lis_name']:
+                sleep(1)
                 modus_lis.click()
                 modus = modus_lis.find_element_by_class_name(element_data['modus_lis']).find_elements_by_xpath(
                     element_data['modus'])
                 for module_name in modus:
                     if module_name.text == element_data['modus_name']:
+                        sleep(1)
                         module_name.click()
                         break
                 break

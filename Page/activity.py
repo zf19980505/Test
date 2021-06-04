@@ -91,7 +91,6 @@ class Activity(BaserPage, metaclass=Singleton):
 
     # 删除拼团
     def delete_group(self, groud_el):
-        print('删除商品')
         # 获取到拼团列表所有拼团商品
         goods_numone = self.locator_element(locator=groud_el['group_lis'], locators=groud_el['group_goods_tr'])
         # 把元素td拆出来，方便定位方法直接使用
