@@ -12,7 +12,7 @@ Coupons:
     modus: li
     moules_lis_name: 优惠券管理
     modus_name: 优惠券列表
-    coupons_name: 测试优惠卷
+    coupons_name: 自动化测试优惠卷
     # 模拟ctrl + a
     ctrl_a: a
     # 开始时间
@@ -27,7 +27,7 @@ Coupons:
     continue_restrict: 全部通用
   coupons_lis:
     # 获取优惠卷表单
-    coupons_tbody: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
+    coupons_body: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
     # 通过公共的tr,td获取表单内的所有优惠卷
     public_tr: (xpath,tr)
     public_td: (xpath,td)
@@ -37,40 +37,29 @@ Coupons:
     public_li: (xpath,li)
     # 新建按钮
     new: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/button)
+    # 新建页面的说有input框
+    coupons_inputs: (class name,el-input__inner)
     # 输入框
     coupons_name: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[1]/div/div/input)
     # 满多少减多少
     full_money: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[2]/div/div/input)
     subtract_money: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[3]/div/div/input)
     # 优惠卷有效期
-    coupons_datetype_input: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[4]/div/div/div/input)
     coupons_date_type: (xpath,/html/body/div[2]/div[1]/div[1]/ul)
     # 打开新建时间
     time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[5]/div/div/input[1])
     # 开始时间
-    start_time: (xpath,/html/body/div[5]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
+    start_time: (xpath,/html/body/div[3]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
     # 结束日期
-    end_date: (xpath,/html/body/div[4]/div[1]/div/div[1]/span[3]/span[1]/div/input)
+    end_date: (xpath,/html/body/div[3]/div[1]/div/div[1]/span[3]/span[1]/div/input)
     # 结束时间
-    end_time: (xpath,/html/body/div[4]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
+    end_time: (xpath,/html/body/div[3]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
     # 确定
-    time_submit: (xpath,/html/body/div[4]/div[2]/button[2]/span)
+    time_submit: (xpath,/html/body/div[3]/div[2]/button[2])
     # 动态日期:领卷后N天后生效
     dynamic_time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[5]/div/div/input)
     # 动态日期：领卷后有效持续天数
     continue_time: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[6]/div/div[1]/input)
     # 优惠卷限制
-    continue_restrict: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[7]/div/div/div/input)
-    continue_restrict_lis: (xpath,/html/body/div[3]/div[1]/div[1]/ul)
-    /html/body/div[4]/div[1]/div[1]/ul
-    /html/body/div[5]/div[1]/div[1]/ul
-    # 指定分类/指定spu编码input框
-    appoint: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[6]/div/div/div/input)
-    # 所有指定分类/指定spu编码内容
-    appoint_lis: (xpath,/html/body/div[4]/div[1]/div[1]/ul)
-    # 全部通用的保存
-    coupons_submit: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[7]/div/button[1])
-    # 全部通用以外的保存
-    continue_restrict_submit: (xpath,//*[@id="app"]/div/div[2]/div/div/div/form/div[8]/div/button[1])
-
-
+    continue_restrict: (class name,el-scrollbar__view)
+    coupons_submit: (class name,el-button)

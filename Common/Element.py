@@ -11,8 +11,14 @@ class BaserPage:
         # self.driver.maximize_window()
 
     # 定位元素
-    def locator_element(self, locator, locators):
-        if locators is None:
+    def locator_element(self, locator=None, locators=None, new_el=None):
+        if new_el is not None:
+            if locators is None and locator is None:
+                return new_el
+            else:
+                locatorkeys, locator_values = locators
+                return new_el.find_elements(locatorkeys, locator_values)
+        elif locators is None:
             locatorkey, locator_value = locator
             return self.driver.find_element(locatorkey, locator_value)
         else:
@@ -20,20 +26,36 @@ class BaserPage:
             locatorkeys, locator_values = locators
             return self.driver.find_element(locatorkey, locator_value).find_elements(locatorkeys, locator_values)
 
-    def send_key(self, locator, locators, value):
-        self.locator_element(locator, locators).send_keys(value)
+    def locator_elements(self, locator):
+        locatorkey, locator_value = locator
+        return self.driver.find_elements(locatorkey, locator_value)
 
-    def click(self, locator, locators):
-        self.locator_element(locator, locators).click()
+    def send_key(self, value, locator=None, locators=None, new_el=None):
+        if new_el is not None:
+            new_el.send_keys(value)
+        else:
+            self.locator_element(locator, locators).send_keys(value)
 
-    def locator_text(self, locator, locators):
-        return self.locator_element(locator, locators).text
+    def click(self, locator=None, locators=None, new_el=None):
+        if new_el is not None:
+            new_el.click()
+        else:
+            self.locator_element(locator, locators).click()
+
+    def locator_text(self, locator=None, locators=None, new_el=None):
+        if new_el is not None:
+            return new_el.text
+        else:
+            return self.locator_element(locator, locators).text
 
     # 关闭浏览器
     def quit(self):
         self.driver.quit()
 
     # 模拟键盘Ctrl + 任意键
-    def keyboard_Ctrl(self, locator, locators, value):
+    def keyboard_Ctrl(self, value, locator=None, locators=None, new_el=None):
         keyboard_value = self.keyboard.CONTROL + value
-        self.send_key(locator, locators, keyboard_value)
+        if new_el is not None:
+            self.send_key(value=keyboard_value, new_el=new_el)
+        else:
+            self.send_key(value=keyboard_value, locator=locator, locators=locators)
