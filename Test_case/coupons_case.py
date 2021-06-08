@@ -17,7 +17,9 @@ class Coupons(unittest.TestCase):
         cls.driver = webdriver.Chrome()
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
-        cls.A_back_url = conf.get('DEFAULT', 'A_back_url')
+        cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
+        # 获取后天日期
+        cls.end_two_dates = (datetime.datetime.now() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
         # 获取明天日期
         cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
@@ -30,7 +32,7 @@ class Coupons(unittest.TestCase):
         """"登录"""
         data = kwargs['data']
         login_el = self.util.str_by_tuple(kwargs['login'])
-        url = self.A_back_url + data['el_login_backpath']
+        url = self.wsc_back_url + data['el_login_backpath']
         self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
         # 断言校验
         test_text = self.Login_case.login_text
@@ -43,7 +45,7 @@ class Coupons(unittest.TestCase):
         # 新建优惠卷
         new_coupons = self.util.str_by_tuple(kwargs['new_coupons'])
         Element_data = kwargs['Element_data']
-        Element_data['end_dates'] = self.end_dates
+        Element_data['end_dates'] = self.end_two_dates
         # 优惠卷列表表单
         coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
         # 业务实现

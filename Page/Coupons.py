@@ -116,6 +116,7 @@ class Coupons_el(BaserPage):
         # 当前下拉框都是最后一个，所以取最后一个来取得当前下拉框里的内容
         dropdown_box_li = self.locator_element(new_el=dropdown_box[-1], locators=coupons_el['public_li'])
         # 取到要选择的优惠卷的key存起来方便后面断言
+        sleep(2)
         self.grant_text = self.locator_text(new_el=dropdown_box_li[0])
         # 最新的优惠卷处于下拉框的第一位，所以默认取第一位
         self.click(new_el=dropdown_box_li[0])
@@ -154,7 +155,10 @@ class Coupons_el(BaserPage):
             coupons_body = self.locator_element(locator=coupons_lis['coupons_body'], locators=coupons_lis['public_tr'])
             for coupons_tr in coupons_body:
                 coupons_td = self.locator_element(new_el=coupons_tr, locators=coupons_lis['public_td'])
-                self.coupons_key = self.locator_text(new_el=coupons_td[2])
+                if self.locator_text(new_el=coupons_td[2]) == self.grant_text:
+                    self.coupons_key = self.locator_text(new_el=coupons_td[2])
+                    return self.coupons_key
+            self.coupons_key = '优惠卷发放失败'
         except Exception as e:
             print(e)
             self.coupons_key = '优惠卷发放失败，进入不到下一个页面'

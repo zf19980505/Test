@@ -27,7 +27,7 @@ class Air_test(unittest.TestCase):
         # cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
-        cls.A_back_url = conf.get('DEFAULT', 'A_back_url')
+        cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
         # 获取明天日期
         cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         cls.group_id = None
@@ -43,7 +43,7 @@ class Air_test(unittest.TestCase):
         """"登录"""
         data = kwargs['data']
         login_el = self.util.str_by_tuple(kwargs['login'])
-        url = self.A_back_url + data['el_login_backpath']
+        url = self.wsc_back_url + data['el_login_backpath']
         self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
         # 断言校验
         test_text = self.Login_case.login_text
