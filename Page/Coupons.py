@@ -8,14 +8,8 @@ import datetime
 
 
 class Coupons_el(BaserPage):
-    def Coupons_tbody(self, coupons_lis):
-        coupons_body = self.locator_element(locator=coupons_lis['coupons_body'], locators=coupons_lis['public_tr'])
-        for coupons_tr in coupons_body:
-            coupons_td = self.locator_element(new_el=coupons_tr, locators=coupons_lis['public_td'])
-            self.coupons_name = self.locator_text(new_el=coupons_td[1])
-
     # 新建优惠卷
-    def New_Coupons(self, element_data, new_coupons):
+    def New_Coupons(self, element_data, new_coupons, coupons_lis):
         self.click(locator=new_coupons['new'], locators=None)
         coupons_inputs = self.locator_elements(new_coupons['coupons_inputs'])
         self.send_key(value=element_data['coupons_name'], new_el=coupons_inputs[0])
@@ -72,6 +66,11 @@ class Coupons_el(BaserPage):
             appoint = self.locator_element(locators=new_coupons['public_li'], new_el=appoint_ul[-1])
             appoint_number = random.randint(0, len(appoint) - 1)
             self.click(new_el=appoint[appoint_number])
-        # print('结束前5秒')
-        # sleep(5)
         self.click(locator=new_coupons['coupons_submit'])
+        # print('前5秒')
+        sleep(5)
+        # 拿到优惠卷页面的所有优惠卷，然后断言是否新建成功
+        coupons_body = self.locator_element(locator=coupons_lis['coupons_body'], locators=coupons_lis['public_tr'])
+        for coupons_tr in coupons_body:
+            coupons_td = self.locator_element(new_el=coupons_tr, locators=coupons_lis['public_td'])
+            self.coupons_name = self.locator_text(new_el=coupons_td[1])

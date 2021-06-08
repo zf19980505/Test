@@ -48,8 +48,7 @@ class Coupons(unittest.TestCase):
         # 优惠卷表单
         coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        self.Coupons_el.New_Coupons(element_data=Element_data, new_coupons=new_coupons)
-        self.Coupons_el.Coupons_tbody(coupons_lis=coupons_lis)
+        self.Coupons_el.New_Coupons(element_data=Element_data, new_coupons=new_coupons, coupons_lis=coupons_lis)
         # 断言
         coupons_name = self.Coupons_el.coupons_name
         self.assertEqual(first=Element_data['coupons_name'], second=coupons_name, msg='新建优惠卷失败')
