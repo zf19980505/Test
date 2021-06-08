@@ -18,6 +18,8 @@ class Coupons(unittest.TestCase):
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
         cls.A_back_url = conf.get('DEFAULT', 'A_back_url')
+        # 获取明天日期
+        cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
@@ -30,7 +32,6 @@ class Coupons(unittest.TestCase):
         login_el = self.util.str_by_tuple(kwargs['login'])
         url = self.A_back_url + data['el_login_backpath']
         self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
-        # 拿到小程序token并且赋值方便后面使用
         # 断言校验
         test_text = self.Login_case.login_text
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
@@ -42,16 +43,34 @@ class Coupons(unittest.TestCase):
         # 新建优惠卷
         new_coupons = self.util.str_by_tuple(kwargs['new_coupons'])
         Element_data = kwargs['Element_data']
-        # 获取明天日期
-        end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-        Element_data['end_dates'] = end_dates
-        # 优惠卷表单
+        Element_data['end_dates'] = self.end_dates
+        # 优惠卷列表表单
         coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
+        # 业务实现
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
         self.Coupons_el.New_Coupons(element_data=Element_data, new_coupons=new_coupons, coupons_lis=coupons_lis)
         # 断言
         coupons_name = self.Coupons_el.coupons_name
         self.assertEqual(first=Element_data['coupons_name'], second=coupons_name, msg='新建优惠卷失败')
+
+    @file_data('../Data/grant_coupons.yaml')
+    def test_2_grantcoupons(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        # 发放优惠卷
+        grant_coupons = self.util.str_by_tuple(kwargs['grant_coupons'])
+        Element_data = kwargs['Element_data']
+        Element_data['end_dates'] = self.end_dates
+        # 优惠卷列表表单
+        coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
+        # 业务实现
+        self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
+        self.Coupons_el.grant_coupons(coupons_el=grant_coupons, element_data=kwargs['Element_data'],
+                                      coupons_lis=coupons_lis)
+        # 断言
+        grant_text = self.Coupons_el.grant_text
+        coupons_key = self.Coupons_el.coupons_key
+        self.assertEqual(first=grant_text, second=coupons_key, msg='优惠卷发放失败')
 
     def test_5_over(self):
         self.Login_case.close()

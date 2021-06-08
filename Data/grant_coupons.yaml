@@ -1,0 +1,43 @@
+Grant_coupons:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  # 页面上元素名称数据
+  Element_data:
+    moules_lis_name: 优惠券管理
+    modus_name: 优惠券发放
+    coupons_name: 自动化测试优惠卷
+    # 开始时间
+    start_end_times: 00:00:00
+    # 模拟ctrl + a
+    ctrl_a: a
+    # 每日限量
+    daily_limited: 10
+    # 每人总限量
+    everyone_limit: 10
+  coupons_lis:
+    # 获取优惠卷发放表单
+    coupons_body: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
+    # 通过公共的tr,td获取表单内的所有优惠卷
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+  grant_coupons:
+    # 公共的ul,li
+    public_ul: (xpath,ul)
+    public_li: (xpath,li)
+    # 发放优惠卷按钮
+    grant_button: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/button)
+    # 发放优惠卷里的所有input框
+    grant_input: (class name,el-input__inner)
+    # 发放优惠卷表单里的下拉框
+    dropdown_box: (class name,el-scrollbar__view)
+    # 确定
+    time_submit: (xpath,/html/body/div[3]/div[2]/button[2])
+    # 最后的提交保存
+    grant_submit: (class name,el-button)
+

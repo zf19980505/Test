@@ -3,8 +3,10 @@ Activity:
   menu_path:
     # 菜单管理列表
     menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
     # 单个模块
-    menu_modules: (xpath,li)
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
   # 页面上元素名称数据
   Element_data:
     # 先拿到单个模块里边的所有内容，在去点击对应的子内容

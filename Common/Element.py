@@ -13,14 +13,26 @@ class BaserPage:
     # 定位元素
     def locator_element(self, locator=None, locators=None, new_el=None):
         if new_el is not None:
-            if locators is None and locator is None:
-                return new_el
-            else:
+            if locators is not None and locator is not None:
+                locatorkey, locator_value = locator
+                locatorkeys, locator_values = locators
+                return new_el.find_element(locatorkey, locator_value).find_elements(locatorkeys, locator_values)
+
+            elif locators is not None and locator is None:
                 locatorkeys, locator_values = locators
                 return new_el.find_elements(locatorkeys, locator_values)
+
+            elif locators is None and locator is not None:
+                locatorkeys, locator_values = locator
+                return new_el.find_element(locatorkeys, locator_values)
+
+            else:
+                return new_el
+
         elif locators is None:
             locatorkey, locator_value = locator
             return self.driver.find_element(locatorkey, locator_value)
+
         else:
             locatorkey, locator_value = locator
             locatorkeys, locator_values = locators
