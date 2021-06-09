@@ -1,6 +1,7 @@
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import requests
 import configparser
 import datetime
 from ddt import ddt, file_data
@@ -17,15 +18,20 @@ class Coupons(unittest.TestCase):
         cls.driver = webdriver.Chrome()
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
+        # 万色城二期后台
         cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
+        # 万色城二期小程序
+        cls.wsc_xcx_back = conf.get('DEFAULT', 'wsc_xcx_back')
         # 获取后天日期
         cls.end_two_dates = (datetime.datetime.now() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
         # 获取明天日期
         cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        cls.coupons_key = None
 
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
         self.Coupons_el = Coupons_el(self.driver, Keys)
+        self.Req_coupons = Req_coupons(requests)
 
     @file_data('../Data/login.yaml')
     def test_0_loging(self, **kwargs):
@@ -71,8 +77,19 @@ class Coupons(unittest.TestCase):
                                       coupons_lis=coupons_lis)
         # 断言
         grant_text = self.Coupons_el.grant_text
-        coupons_key = self.Coupons_el.coupons_key
-        self.assertEqual(first=grant_text, second=coupons_key, msg='优惠卷发放失败')
+        Coupons.coupons_key = self.Coupons_el.coupons_key
+        self.assertEqual(first=grant_text, second=self.coupons_key, msg='优惠卷发放失败')
+
+    @file_data('../Data/grant_coupons.yaml')
+    def test_3_get(self, **kwargs):
+        xcx_coupons = kwargs['xcx_coupons']
+        xcx_coupons['coupons_key'] = self.coupons_key
+        url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
+        self.Req_coupons.get_coupons(url=url, params=xcx_coupons['get_coupons_data'], headers=xcx_coupons['headers'],
+                                     public_data=xcx_coupons)
+        # 断言
+        get_coupons_text = self.Req_coupons.get_coupons_text
+        self.assertEqual(first=self.coupons_key, second=get_coupons_text, msg='小程序找不到该优惠卷')
 
     def test_5_over(self):
         self.Login_case.close()

@@ -48,6 +48,6 @@ Grant_coupons:
     # 通过接口获取到所有优惠卷
     get_coupons_path: /group/coupon_node
 #    public_data: data
-    public_data: '"coupon":{'
+    public_data: '"coupon":'
     get_coupons_data:
       p: 1

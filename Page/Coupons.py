@@ -171,18 +171,10 @@ class Req_coupons(BaserRequest):
         res = self.get(url=url, params=params, headers=headers)
         res_text = res.text
         # 正则提取返回信息
-        re_data = re.findall(public_data['public_data'] + '(.*?)}', res_text)
+        re_data = re.findall(public_data['public_data'] + '(.*?)},', res_text)
         for i in re_data:
-            a = i.split(',')
-            for b in a:
-                print(b)
-                print(type(b))
-            # a = re.findall('"' + '(.*?)"', i)
-            # print(a)
-        # for key, val in dict.items(eval(res.text)):
-        #     if key == public_data['public_data']:
-        #         for two_val in val:
-        #             for data_key, data_val in dict.items(two_val):
-        #                 if data_key == 'coupon':
-        #                     if data_val['name'] == "5-4":
-        #                         print(data_val)
+            dict_data = json.loads(i)
+            if dict_data['coupon_node'] == public_data['coupons_key']:
+                self.get_coupons_text = dict_data['coupon_node']
+                return self.get_coupons
+        self.get_coupons_text = '找不到该优惠卷'

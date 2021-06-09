@@ -57,9 +57,13 @@ class Air_test(unittest.TestCase):
     @file_data('../Data/grant_coupons.yaml')
     def test_1(self, **kwargs):
         xcx_coupons = kwargs['xcx_coupons']
+        xcx_coupons['coupons_key'] = self.coupons_key
         url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
         self.Req_coupons.get_coupons(url=url, params=xcx_coupons['get_coupons_data'], headers=xcx_coupons['headers'],
                                      public_data=xcx_coupons)
+        # 断言
+        get_coupons_text = self.Req_coupons.get_coupons_text
+        self.assertEqual(first=self.coupons_key, second=get_coupons_text, msg='小程序找不到该优惠卷')
 
     # @file_data('../Data/grant_coupons.yaml')
     # def test_2(self, **kwargs):
