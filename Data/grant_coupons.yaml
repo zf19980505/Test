@@ -40,4 +40,14 @@ Grant_coupons:
     time_submit: (xpath,/html/body/div[3]/div[2]/button[2])
     # 最后的提交保存
     grant_submit: (class name,el-button)
-
+  # 小程序领取优惠卷
+  xcx_coupons:
+    headers:
+      userid: '28'
+      autotest: '1'
+    # 通过接口获取到所有优惠卷
+    get_coupons_path: /group/coupon_node
+#    public_data: data
+    public_data: '"coupon":{'
+    get_coupons_data:
+      p: 1

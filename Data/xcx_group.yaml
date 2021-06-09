@@ -18,4 +18,5 @@ Group:
     xcx_group_pay_submit: E:/Python/TestWebProject/Data/log/提交订单按钮.png
     xcx_wx_pay: E:/Python/TestWebProject/Data/log/微信支付.png
     xcx_group_pay_complete: E:/Python/TestWebProject/Data/log/微信支付完成.png
+    # air_test键盘输入代码
     xcx_keyboard: KEYCODE_1,KEYCODE_9,KEYCODE_9,KEYCODE_8,KEYCODE_5,KEYCODE_5

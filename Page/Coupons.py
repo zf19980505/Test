@@ -4,6 +4,8 @@ from Common.req_Element import *
 from airtest.core.api import *
 from time import sleep
 import random
+import re
+import json
 
 
 class Coupons_el(BaserPage):
@@ -162,3 +164,25 @@ class Coupons_el(BaserPage):
         except Exception as e:
             print(e)
             self.coupons_key = '优惠卷发放失败，进入不到下一个页面'
+
+
+class Req_coupons(BaserRequest):
+    def get_coupons(self, url, params, headers, public_data):
+        res = self.get(url=url, params=params, headers=headers)
+        res_text = res.text
+        # 正则提取返回信息
+        re_data = re.findall(public_data['public_data'] + '(.*?)}', res_text)
+        for i in re_data:
+            a = i.split(',')
+            for b in a:
+                print(b)
+                print(type(b))
+            # a = re.findall('"' + '(.*?)"', i)
+            # print(a)
+        # for key, val in dict.items(eval(res.text)):
+        #     if key == public_data['public_data']:
+        #         for two_val in val:
+        #             for data_key, data_val in dict.items(two_val):
+        #                 if data_key == 'coupon':
+        #                     if data_val['name'] == "5-4":
+        #                         print(data_val)
