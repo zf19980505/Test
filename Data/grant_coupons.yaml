@@ -36,7 +36,7 @@ Grant_coupons:
     grant_input: (class name,el-input__inner)
     # 发放优惠卷表单里的下拉框
     dropdown_box: (class name,el-scrollbar__view)
-    # 确定
+    # 日期时间里的确定
     time_submit: (xpath,/html/body/div[3]/div[2]/button[2])
     # 最后的提交保存
     grant_submit: (class name,el-button)
@@ -47,7 +47,30 @@ Grant_coupons:
       autotest: '1'
     # 通过接口获取到所有优惠卷
     get_coupons_path: /group/coupon_node
-#    public_data: data
     public_data: '"coupon":'
-    get_coupons_data:
+    look_coupons_data:
       p: 1
+  Air_coup:
+    xcx_page:
+      name: android.view.View
+    xcx_my:
+      text: 我的
+    xcx_grant_coupons:
+      text: 领券中心
+    xcx_return:
+      name: com.tencent.mm:id/dc
+    xcx_home:
+      text: 首页
+  Air_Mycoup:
+    xcx_page:
+      name: android.view.View
+    xcx_my:
+      text: 我的
+    xcx_grant_coupons:
+      text: 我的优惠券
+    xcx_return:
+      name: com.tencent.mm:id/dc
+    xcx_home:
+      text: 首页
+  swipe:
+    xcx_swipe: (0.5,0.8,0.5,0.3)

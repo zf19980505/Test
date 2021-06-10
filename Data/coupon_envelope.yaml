@@ -1,0 +1,58 @@
+Coupon_envelope:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  # 页面上元素名称数据
+  Element_data:
+    moules_lis_name: 优惠券管理
+    modus_name: 开屏红包
+    # 红包名称
+    envelope_name_path: 0
+    envelope_name: 自动化开屏红包
+    # 优惠卷的key
+    envelope_key_path: 1
+    # 红包的图片
+    envelope_photo: D:/pycharm/TestWebProject/Data/log/拼团商品.png
+    # 日期时间
+    time_path: 2
+    # 开始时间
+    start_time_path: 5
+    # 结束日期，时间
+    end_date_path: 6
+    end_time_path: 7
+    start_end_times: 00:00:00
+    # 模拟ctrl + a
+    ctrl_a: a
+    # 跳转类型的下拉框
+    skip_type_path: 3
+    # spu编码的下拉框
+    spu_path: 4
+  envelope_lis:
+    # 通过公共的tr,td获取表单内的所有优惠卷
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+    # 获取到开屏红包的表单
+    envelope_body: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/div/div[3]/table/tbody)
+  new_envelope:
+    # 公共的ul,li
+    public_ul: (xpath,ul)
+    public_li: (xpath,li)
+    # 新建开屏红包按钮
+    new: (xpath,//*[@id="app"]/div/div[2]/div/div/div/button)
+    # 获取到页面里所有input框
+    public_input: (class name,el-input__inner)
+    # 发放优惠卷表单里的下拉框
+    dropdown_box: (class name,el-scrollbar__view)
+    # 红包图片
+    envelope_photo: (name,file)
+    # 日期时间里的确定
+    time_submit: (xpath,/html/body/div[3]/div[2]/button[2])
+    # 是否启用
+    start_using: (class name,el-switch)
+    # 最后的提交保存
+    submit: (class name,el-button)

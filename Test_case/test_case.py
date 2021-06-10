@@ -19,7 +19,7 @@ class Air_test(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.util = Data_conversion()
-        # cls.driver = webdriver.Chrome()
+        cls.driver = webdriver.Chrome()
         # if not cli_setup():
         #     cls.driver = api.auto_setup(__file__, logdir=None, devices=[
         #         "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
@@ -31,61 +31,56 @@ class Air_test(unittest.TestCase):
         cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
         # 万色城二期小程序
         cls.wsc_xcx_back = conf.get('DEFAULT', 'wsc_xcx_back')
+        # 获取后天日期
+        cls.end_two_dates = (datetime.datetime.now() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
         # 获取明天日期
-        # cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        cls.end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         # cls.group_id = None
 
     def setUp(self):
-        # self.Login_case = Login_server(self.driver, Keys)
-        # self.Coupons_el = Coupons_el(self.driver, Keys)
+        self.Login_case = Login_server(self.driver, Keys)
+        self.Coupons_el = Coupons_el(self.driver, Keys)
         self.Req_coupons = Req_coupons(requests)
+        # self.Air_coupons = Air_coupons(self.poco, api)
         # self.Airtest_Server = Airtest_Server(self.poco, api)
         # self.Req_login = Req_login(requests)
 
-    # @file_data('../Data/login.yaml')
-    # def test_0_loging(self, **kwargs):
-    #     """"登录"""
-    #     data = kwargs['data']
-    #     login_el = self.util.str_by_tuple(kwargs['login'])
-    #     url = self.wsc_back_url + data['el_login_backpath']
-    #     self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
-    #     # 断言校验
-    #     test_text = self.Login_case.login_text
-    #     self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
+    @file_data('../Data/login.yaml')
+    def test_0_loging(self, **kwargs):
+        """"登录"""
+        data = kwargs['data']
+        login_el = self.util.str_by_tuple(kwargs['login'])
+        url = self.wsc_back_url + data['el_login_backpath']
+        self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
+        # 断言校验
+        test_text = self.Login_case.login_text
+        self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
 
-    # @file_data('../Data/coupons.yaml')
-    @file_data('../Data/grant_coupons.yaml')
-    def test_1(self, **kwargs):
-        xcx_coupons = kwargs['xcx_coupons']
-        xcx_coupons['coupons_key'] = self.coupons_key
-        url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
-        self.Req_coupons.get_coupons(url=url, params=xcx_coupons['get_coupons_data'], headers=xcx_coupons['headers'],
-                                     public_data=xcx_coupons)
-        # 断言
-        get_coupons_text = self.Req_coupons.get_coupons_text
-        self.assertEqual(first=self.coupons_key, second=get_coupons_text, msg='小程序找不到该优惠卷')
-
+    @file_data('../Data/coupons.yaml')
     # @file_data('../Data/grant_coupons.yaml')
-    # def test_2(self, **kwargs):
-    #     # 首页菜单
-    #     menu_path = self.util.str_by_tuple(kwargs['menu_path'])
-    #     # 发放优惠卷
-    #     grant_coupons = self.util.str_by_tuple(kwargs['grant_coupons'])
-    #     Element_data = kwargs['Element_data']
-    #     Element_data['end_dates'] = self.end_dates
-    #     # 优惠卷列表表单
-    #     coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
-    #     # 业务实现
-    #     self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
-    #     self.Coupons_el.grant_coupons(coupons_el=grant_coupons, element_data=kwargs['Element_data'],
-    #                                   coupons_lis=coupons_lis)
-    #     # 断言
-    #     grant_text = self.Coupons_el.grant_text
-    #     coupons_key = self.Coupons_el.coupons_key
-    #     self.assertEqual(first=grant_text, second=coupons_key, msg='优惠卷发放失败')
+    def test_1(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
 
-    # def test_5_over(self):
-    #     self.Login_case.close()
+    @file_data('../Data/coupon_envelope.yaml')
+    def test_2(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        # 新建开屏红包
+        new_envelope = self.util.str_by_tuple(kwargs['new_envelope'])
+        # 优惠卷列表表单
+        envelope_lis = self.util.str_by_tuple(kwargs['envelope_lis'])
+        element_data = kwargs['Element_data']
+        element_data['end_dates'] = self.end_two_dates
+        self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
+        self.Coupons_el.new_coupon_envelope(envelope_el=new_envelope, element_data=element_data, envelope_lis=envelope_lis)
+        # 断言
+        envelope_text = self.Coupons_el.envelope_text
+        self.assertEqual(first=element_data['envelope_name'], second=envelope_text, msg='新建开屏红包失败')
+
+    def test_5_over(self):
+        self.Login_case.close()
 
 
 if __name__ == '__main__':
