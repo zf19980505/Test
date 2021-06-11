@@ -19,15 +19,14 @@ from ddt import ddt, file_data
 class Activity_TestRun(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.util = Data_conversion()
-        if not cli_setup():
-            cls.driver = api.auto_setup(__file__, logdir=None, devices=[
-                "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
-            ])
-        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-        cls.driver = webdriver.Chrome()
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
+        cls.util = Data_conversion()
+        yeshen = conf.get('DEFAULT', 'air_yeshen')
+        if not cli_setup():
+            api.auto_setup(__file__, logdir=None, devices=[yeshen])
+        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
+        cls.driver = webdriver.Chrome()
         cls.url = conf.get('DEFAULT', 'A_admin_url')
         # 定义一个参数接收储存添加成为拼团商品的SPU
         cls.group_good_spu = None

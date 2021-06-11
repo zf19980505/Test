@@ -1,6 +1,7 @@
 from Common.Air_Element import *
 from Common.Element import *
 from Common.req_Element import *
+from Confing.Mysql_confing import *
 from airtest.core.api import *
 from time import sleep
 import random
@@ -229,7 +230,8 @@ class Coupons_el(BaserPage):
         # 断言阶段
         try:
             # 拿到优惠卷页面的所有优惠卷，然后断言是否新建成功
-            envelope_body = self.locator_element(locator=envelope_lis['envelope_body'], locators=envelope_lis['public_tr'])
+            envelope_body = self.locator_element(locator=envelope_lis['envelope_body'],
+                                                 locators=envelope_lis['public_tr'])
             for envelope_tr in envelope_body:
                 envelope_td = self.locator_element(new_el=envelope_tr, locators=envelope_lis['public_td'])
                 if self.locator_text(new_el=envelope_td[1]) == element_data['envelope_name']:
@@ -290,3 +292,28 @@ class Air_coupons(ApiBaserPage):
         self.poco_click(air_locator=air_el['xcx_return'])
         self.poco_click(air_locator=air_el['xcx_home'])
         self.air_grant_coupons_text = 'False'
+
+    def look_coupon_envelope(self, air_el, air_data):
+        for i in range(10):
+            if self.api_exists(api_locator=air_data['envelope_photo']):
+                self.api_touch(api_locator=air_data['envelope_photo'])
+                self.poco_click(air_locator=air_el['xcx_return'])
+                self.look_envelope_text = 'True'
+                return self.look_envelope_text
+            else:
+                sleep(1)
+                self.poco_click(air_locator=air_el['wx_more'])
+                wx_refresh = self.poco_element(air_locator=air_el['wx_refresh'])
+                self.poco_click(air_new=wx_refresh[air_data['wx_refresh_path']])
+        self.look_envelope_text = 'False'
+
+
+# todo 连接数据库
+class Mysql_coupons(Mysql):
+    def delete_my_coupons(self, sql_el):
+        sql_result = self.mysql_delete(sql=sql_el)
+        if sql_result:
+            self.delete_mycoupons_text = True
+        else:
+            self.delete_mycoupons_text = False
+        self.close_mysql()

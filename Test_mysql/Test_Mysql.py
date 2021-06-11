@@ -9,7 +9,7 @@ class Test_sql:
             conn = pymysql.connect(host='47.110.11.166', user="root", password="123456", database=aaaa, port=3306,
                                    charset='utf8mb4')
             cursor = conn.cursor()
-            #todo 不是购物车
+            # todo 不是购物车
             order_sql = 'SELECT oi.order_sn,oi.size FROM `t_refund` re INNER JOIN tb_order_info oi on re.order_sn = oi.order_sn where oi.attr01_value != "购物车"'
             cursor.execute(order_sql)
             yijiaren_results = cursor.fetchall()
@@ -18,7 +18,7 @@ class Test_sql:
                 cursor.execute(refund_updates)
                 conn.commit()
 
-            #todo 购物车
+            # todo 购物车
             goods_order_sql = 'SELECT re.id, re.order_sn, re.goodsNumber FROM `t_refund` re INNER JOIN tb_order_info oi on re.order_sn = oi.order_sn where oi.attr01_value = "购物车"'
             orde_goods = 'SELECT og.order_sn,og.size, og.skuId from tb_order_goods og'
             cursor.execute(orde_goods)

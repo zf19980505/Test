@@ -8,14 +8,23 @@ class ApiBaserPage:
     def poco_element(self, air_locator):
         return self.air_poco(**air_locator)
 
-    def poco_click(self, air_locator):
-        self.poco_element(air_locator).click()
+    def poco_click(self, air_locator=None, air_new=None):
+        if air_new is None:
+            self.poco_element(air_locator).click()
+        else:
+            air_new.click()
 
-    def poco_send_keys(self, air_locator, value):
-        self.poco_element(air_locator).send_keys(value)
+    def poco_send_keys(self, value, air_locator=None, air_new=None):
+        if air_new is None:
+            self.poco_element(air_locator).send_keys(value)
+        else:
+            air_new.send_keys(value)
 
-    def poco_text(self, air_locator):
-        return self.poco_element(air_locator).get_text()
+    def poco_text(self, air_locator=None, air_new=None):
+        if air_new is None:
+            return self.poco_element(air_locator).get_text()
+        else:
+            return air_new.get_text()
 
     def poco_exists(self, air_locator):
         return self.poco_element(air_locator).exists()

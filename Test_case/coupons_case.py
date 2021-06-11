@@ -17,16 +17,15 @@ from Page.Coupons import *
 class Coupons(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.util = Data_conversion()
-        cls.driver = webdriver.Chrome()
-        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-        if not cli_setup():
-            cls.drivers = api.auto_setup(__file__, logdir=None, devices=[
-                "Android://127.0.0.1:5037/43793282?cap_method=JAVACAP^&^&ori_method=ADBORI",
-            ])
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
-        # 万色城二期后台
+        cls.util = Data_conversion()
+        yeshen = conf.get('DEFAULT', 'air_yeshen')
+        if not cli_setup():
+            api.auto_setup(__file__, logdir=None, devices=[yeshen])
+        cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
+        cls.driver = webdriver.Chrome()
+        # 万色城二期分销后台
         cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
         # 万色城二期小程序
         cls.wsc_xcx_back = conf.get('DEFAULT', 'wsc_xcx_back')
@@ -43,6 +42,7 @@ class Coupons(unittest.TestCase):
         self.Req_coupons = Req_coupons(requests)
         self.Air_coupons = Air_coupons(self.poco, api)
 
+    # todo 登录
     @file_data('../Data/login.yaml')
     def test_0_loging(self, **kwargs):
         """"登录"""
@@ -54,6 +54,7 @@ class Coupons(unittest.TestCase):
         test_text = self.Login_case.login_text
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
 
+    # todo 新建优惠卷
     @file_data('../Data/coupons.yaml')
     def test_1_newcoupons(self, **kwargs):
         # 首页菜单
@@ -71,8 +72,27 @@ class Coupons(unittest.TestCase):
         Coupons.coupons_name = self.Coupons_el.coupons_name
         self.assertEqual(first=Element_data['coupons_name'], second=self.coupons_name, msg='新建优惠卷失败')
 
+    # todo 新建开屏红包
+    @file_data('../Data/coupon_envelope.yaml')
+    def test_2_couponenvelope(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        # 新建开屏红包
+        new_envelope = self.util.str_by_tuple(kwargs['new_envelope'])
+        # 优惠卷列表表单
+        envelope_lis = self.util.str_by_tuple(kwargs['envelope_lis'])
+        element_data = kwargs['Element_data']
+        element_data['end_dates'] = self.end_two_dates
+        self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
+        self.Coupons_el.new_coupon_envelope(envelope_el=new_envelope, element_data=element_data,
+                                            envelope_lis=envelope_lis)
+        # 断言
+        envelope_text = self.Coupons_el.envelope_text
+        self.assertEqual(first=element_data['envelope_name'], second=envelope_text, msg='新建开屏红包失败')
+
+    # todo 发放优惠卷
     @file_data('../Data/grant_coupons.yaml')
-    def test_2_grantcoupons(self, **kwargs):
+    def test_3_grantcoupons(self, **kwargs):
         # 首页菜单
         menu_path = self.util.str_by_tuple(kwargs['menu_path'])
         # 发放优惠卷
@@ -90,8 +110,9 @@ class Coupons(unittest.TestCase):
         Coupons.coupons_key = self.Coupons_el.coupons_key
         self.assertEqual(first=grant_text, second=self.coupons_key, msg='优惠卷发放失败')
 
+    # todo 用户小程序查看优惠卷
     @file_data('../Data/grant_coupons.yaml')
-    def test_3_xcx_couponscentre(self, **kwargs):
+    def test_4_xcx_couponscentre(self, **kwargs):
         size = self.util.str_lis(kwargs['swipe'])
         Air_coup = kwargs['Air_coup']
         Air_coup['coupons_name'] = {'text': self.coupons_name}
@@ -100,19 +121,50 @@ class Coupons(unittest.TestCase):
         air_grant_coupons_text = self.Air_coupons.air_grant_coupons_text
         self.assertEqual(first='True', second=air_grant_coupons_text, msg='小程序页面上看不到该优惠券')
 
-    @file_data('../Data/grant_coupons.yaml')
-    def test_4_look_coupons(self, **kwargs):
-        xcx_coupons = kwargs['xcx_coupons']
-        xcx_coupons['coupons_key'] = self.coupons_key
-        url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
-        self.Req_coupons.xcx_look_coupons(url=url, params=xcx_coupons['look_coupons_data'],
-                                          headers=xcx_coupons['headers'], public_data=xcx_coupons)
+    # todo 小程序查看开屏红包并领取开屏红包
+    @file_data('../Data/coupon_envelope.yaml')
+    def test_5_xcx_lookenvelope(self, **kwargs):
+        size = self.util.str_lis(kwargs['swipe'])
+        air_envelope = kwargs['Air_envelope']
+        self.Air_coupons.look_coupon_envelope(air_el=kwargs['Air_envelope'], air_data=kwargs['Element_data'])
         # 断言
-        get_coupons_text = self.Req_coupons.get_coupons_text
-        self.assertEqual(first=self.coupons_key, second=get_coupons_text, msg='小程序找不到该优惠卷')
+        if self.Air_coupons.look_envelope_text == 'False':
+            self.assertEqual(first='True', second='False', msg='小程序上未展示开屏红包')
+        else:
+            air_envelope['coupons_name'] = {'text': self.coupons_name}
+            self.Air_coupons.look_grant_coupons(air_el=air_envelope, air_swipe=size)
+            self.assertEqual(first='True', second='False', msg='点击了开屏红包但是并未领取到')
 
+    # todo 我的优惠券查看领取到的优惠券
     @file_data('../Data/grant_coupons.yaml')
-    def test_5_get_coupons(self, **kwargs):
+    def test_6_xcx_Mycoup(self, **kwargs):
+        size = self.util.str_lis(kwargs['swipe'])
+        mysql = kwargs['Mysql']
+        Air_Mycoup = kwargs['Air_Mycoup']
+        Air_Mycoup['coupons_name'] = {'text': self.coupons_name}
+        self.Air_coupons.look_grant_coupons(air_el=Air_Mycoup, air_swipe=size)
+        # 断言
+        air_grant_coupons_text = self.Air_coupons.air_grant_coupons_text
+        if air_grant_coupons_text:
+            mysql = Mysql_coupons(mysql['sql_name'])
+            mysql.delete_my_coupons(sql_el=mysql)
+        else:
+            self.assertEqual(first='True', second=air_grant_coupons_text, msg='小程序我的优惠券上看不到刚领取的优惠券')
+
+    # @file_data('../Data/grant_coupons.yaml')
+    # def test_4_look_coupons(self, **kwargs):
+    #     xcx_coupons = kwargs['xcx_coupons']
+    #     xcx_coupons['coupons_key'] = self.coupons_key
+    #     url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
+    #     self.Req_coupons.xcx_look_coupons(url=url, params=xcx_coupons['look_coupons_data'],
+    #                                       headers=xcx_coupons['headers'], public_data=xcx_coupons)
+    #     # 断言
+    #     get_coupons_text = self.Req_coupons.get_coupons_text
+    #     self.assertEqual(first=self.coupons_key, second=get_coupons_text, msg='小程序接口找不到该优惠卷')
+
+    # todo 接口直接领取优惠券
+    @file_data('../Data/grant_coupons.yaml')
+    def test_7_get_coupons(self, **kwargs):
         xcx_coupons = kwargs['xcx_coupons']
         xcx_coupons['coupons_key'] = self.coupons_key
         url = self.wsc_xcx_back + xcx_coupons['get_coupons_path']
@@ -122,17 +174,7 @@ class Coupons(unittest.TestCase):
         get_coupons_text = self.Req_coupons.get_coupons_text
         self.assertEqual(first='True', second=get_coupons_text, msg='用户领取优惠卷失败')
 
-    @file_data('../Data/grant_coupons.yaml')
-    def test_6_xcx_Mycoup(self, **kwargs):
-        size = self.util.str_lis(kwargs['swipe'])
-        Air_Mycoup = kwargs['Air_Mycoup']
-        Air_Mycoup['coupons_name'] = {'text': self.coupons_name}
-        self.Air_coupons.look_grant_coupons(air_el=Air_Mycoup, air_swipe=size)
-        # 断言
-        air_grant_coupons_text = self.Air_coupons.air_grant_coupons_text
-        self.assertEqual(first='True', second=air_grant_coupons_text, msg='小程序我的优惠券上看不到刚领取的优惠券')
-
-    def test_7_over(self):
+    def test_8_over(self):
         self.Login_case.close()
 
 
