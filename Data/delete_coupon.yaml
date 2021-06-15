@@ -1,0 +1,46 @@
+Delete_coupons:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 优惠券管理
+    modus_name: 优惠券列表
+    # 优惠券key路径
+    coupons_key_path: 2
+    # 小程序底部菜单栏
+    xcx_my: 我的
+    xcx_home: 首页
+    # air模拟键盘返回
+    xcx_return: 'KEYCODE_BACK'
+  coupons_lis:
+    # 获取优惠卷列表表单
+    coupons_body: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
+    # 列表里边的按钮
+    coupons_button: (xpath,div/button)
+    # 删除的二次确认的确认按钮
+    delete_tru: (xpath,/html/body/div[2]/div/div[3]/button[2])
+    # 通过公共的tr,td获取表单内的所有优惠卷
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+  Air_coup:
+    xcx_page:
+      name: android.view.View
+    xcx_menu_bar:
+      name: com.tencent.mm:id/rd
+    xcx_grant_coupons:
+      text: 领券中心
+  swipe:
+    xcx_swipe: (0.5,0.8,0.5,0.6)
+  Mysql:
+    sql_name: wsc_db1
+    select_my_coupons: SELECT * FROM tb_coupon_by_user WHERE coupon_name = "自动化测试优惠卷"
+    delete_my_coupons: DELETE FROM tb_coupon_by_user WHERE coupon_name = "自动化测试优惠卷"

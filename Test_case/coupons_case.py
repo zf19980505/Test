@@ -82,7 +82,7 @@ class Coupons(unittest.TestCase):
         # 优惠卷列表表单
         envelope_lis = self.util.str_by_tuple(kwargs['envelope_lis'])
         element_data = kwargs['Element_data']
-        element_data['end_dates'] = self.end_two_dates
+        element_data['end_dates'] = self.end_dates
         self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
         self.Coupons_el.new_coupon_envelope(envelope_el=new_envelope, element_data=element_data,
                                             envelope_lis=envelope_lis)
@@ -116,10 +116,9 @@ class Coupons(unittest.TestCase):
         size = self.util.str_lis(kwargs['swipe'])
         Air_coup = kwargs['Air_coup']
         Air_coup['coupons_name'] = {'text': self.coupons_name}
-        self.Air_coupons.look_grant_coupons(air_el=Air_coup, air_swipe=size)
+        self.Air_coupons.look_grant_coupons(air_el=Air_coup, air_swipe=size, air_data=kwargs['Element_data'])
         # 断言
-        air_grant_coupons_text = self.Air_coupons.air_grant_coupons_text
-        self.assertEqual(first='True', second=air_grant_coupons_text, msg='小程序页面上看不到该优惠券')
+        self.assertEqual(first=True, second=self.Air_coupons.air_grant_coupons_text, msg='小程序页面上看不到该优惠券')
 
     # todo 小程序查看开屏红包并领取开屏红包
     @file_data('../Data/coupon_envelope.yaml')
@@ -128,28 +127,29 @@ class Coupons(unittest.TestCase):
         air_envelope = kwargs['Air_envelope']
         self.Air_coupons.look_coupon_envelope(air_el=kwargs['Air_envelope'], air_data=kwargs['Element_data'])
         # 断言
-        if self.Air_coupons.look_envelope_text == 'False':
-            self.assertEqual(first='True', second='False', msg='小程序上未展示开屏红包')
+        if not self.Air_coupons.look_envelope_text:
+            self.assertEqual(first=True, second=self.Air_coupons.look_envelope_text, msg='小程序上未展示开屏红包')
         else:
             air_envelope['coupons_name'] = {'text': self.coupons_name}
-            self.Air_coupons.look_grant_coupons(air_el=air_envelope, air_swipe=size)
-            self.assertEqual(first='True', second='False', msg='点击了开屏红包但是并未领取到')
+            self.Air_coupons.look_grant_coupons(air_el=air_envelope, air_swipe=size, air_data=kwargs['Element_data'])
+            self.assertEqual(first=True, second=self.Air_coupons.air_grant_coupons_text, msg='点击了开屏红包但是并未领取到')
 
     # todo 我的优惠券查看领取到的优惠券
     @file_data('../Data/grant_coupons.yaml')
     def test_6_xcx_Mycoup(self, **kwargs):
         size = self.util.str_lis(kwargs['swipe'])
-        mysql = kwargs['Mysql']
+        coupons_sql = kwargs['Mysql']
         Air_Mycoup = kwargs['Air_Mycoup']
         Air_Mycoup['coupons_name'] = {'text': self.coupons_name}
-        self.Air_coupons.look_grant_coupons(air_el=Air_Mycoup, air_swipe=size)
+        self.Air_coupons.look_grant_coupons(air_el=Air_Mycoup, air_swipe=size, air_data=kwargs['Element_data'])
         # 断言
-        air_grant_coupons_text = self.Air_coupons.air_grant_coupons_text
-        if air_grant_coupons_text:
-            mysql = Mysql_coupons(mysql['sql_name'])
-            mysql.delete_my_coupons(sql_el=mysql)
+        if self.Air_coupons.air_grant_coupons_text:
+            mysql = Mysql_coupons(coupons_sql['sql_name'])
+            mysql.delete_my_coupons(sql_el=coupons_sql)
+            if not mysql.delete_mycoupons_text:
+                self.assertEqual(first=True, second=mysql.delete_mycoupons_text, msg='数据库语句删除失败')
         else:
-            self.assertEqual(first='True', second=air_grant_coupons_text, msg='小程序我的优惠券上看不到刚领取的优惠券')
+            self.assertEqual(first=True, second=self.Air_coupons.air_grant_coupons_text, msg='小程序我的优惠券上看不到刚领取的优惠券')
 
     # @file_data('../Data/grant_coupons.yaml')
     # def test_4_look_coupons(self, **kwargs):
@@ -174,7 +174,38 @@ class Coupons(unittest.TestCase):
         get_coupons_text = self.Req_coupons.get_coupons_text
         self.assertEqual(first='True', second=get_coupons_text, msg='用户领取优惠卷失败')
 
-    def test_8_over(self):
+    # todo 删除优惠卷
+    @file_data('../Data/delete_coupon.yaml')
+    def test_8_delete_coupons(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        # 拿到之前存起来的key值
+        kwargs['Element_data']['coupons_key'] = self.coupons_key
+        kwargs['Element_data']['coupons_name'] = self.coupons_name
+        # 优惠券列表页
+        coupons_lis = self.util.str_by_tuple(kwargs['coupons_lis'])
+        # Air小程序数据
+        size = self.util.str_lis(kwargs['swipe'])
+        air_coup = kwargs['Air_coup']
+        air_coup['coupons_name'] = {'text': self.coupons_name}
+        # 通过连接数据库执行删除语句删除刚刚领取优惠卷的用户记录
+        coupons_sql = kwargs['Mysql']
+        mysql = Mysql_coupons(coupons_sql['sql_name'])
+        mysql.delete_my_coupons(sql_el=coupons_sql)
+        if not mysql.delete_mycoupons_text:
+            self.assertEqual(first=True, second=mysql.delete_mycoupons_text, msg='数据库语句删除失败')
+            pass
+        # 重新回到优惠劵列表页面
+        self.Login_case.menu_module(menu_path=menu_path, again_menu=kwargs['Element_data'])
+        self.Coupons_el.delete_coupon(coupon_el=coupons_lis, element_data=kwargs['Element_data'])
+        # 断言
+        if self.Coupons_el.delete_coupon_text is True:
+            self.Air_coupons.look_grant_coupons(air_el=air_coup, air_swipe=size, air_data=kwargs['Element_data'])
+            self.assertEqual(first=False, second=self.Air_coupons.air_grant_coupons_text, msg='删除了的优惠券在小程序上还存在')
+        else:
+            self.assertEqual(first=True, second=self.Coupons_el.delete_coupon_text, msg='后台分销的优惠券删除失败')
+
+    def test_9_over(self):
         self.Login_case.close()
 
 

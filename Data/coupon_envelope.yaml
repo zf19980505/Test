@@ -34,6 +34,11 @@ Coupon_envelope:
     spu_path: 4
     # air_xcx小程序的刷新按钮的小标
     wx_refresh_path: 9
+    # 小程序底部菜单栏
+    xcx_my: 我的
+    xcx_home: 首页
+    # air模拟键盘返回
+    xcx_return: 'KEYCODE_BACK'
   envelope_lis:
     # 通过公共的tr,td获取表单内的所有优惠卷
     public_tr: (xpath,tr)
@@ -67,15 +72,9 @@ Coupon_envelope:
       name: com.tencent.mm:id/dt5
     xcx_page:
       name: android.view.View
-    xcx_my:
-      text: 我的
+    xcx_menu_bar:
+      name: com.tencent.mm:id/rd
     xcx_grant_coupons:
       text: 我的优惠券
-    # 安卓原生的返回
-    xcx_return:
-      name: com.tencent.mm:id/e6
-    # 进入首页
-    xcx_home:
-      text: 首页
   swipe:
     xcx_swipe: (0.5,0.8,0.5,0.3)

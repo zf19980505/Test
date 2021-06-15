@@ -242,6 +242,27 @@ class Coupons_el(BaserPage):
             print(e)
             self.envelope_text = '新建开屏红包失败，进入不到下一个页面'
 
+    # 删除优惠券
+    def delete_coupon(self, coupon_el, element_data):
+        coupons_num = self.locator_element(locator=coupon_el['coupons_body'], locators=coupon_el['public_tr'])
+        for coupons_tr in coupons_num:
+            coupons_td = self.locator_element(new_el=coupons_tr, locators=coupon_el['public_td'])
+            if self.locator_text(new_el=coupons_td[element_data['coupons_key_path']]) == element_data['coupons_key']:
+                coupons_button = self.locator_element(new_el=coupons_td[-1], locators=coupon_el['coupons_button'])
+                self.click(new_el=coupons_button[-1])
+                sleep(2)
+                self.click(locator=coupon_el['delete_tru'])
+                sleep(5)
+                break
+        # 重新获取当前列表以做断言校验
+        coupons_num = self.locator_element(locator=coupon_el['coupons_body'], locators=coupon_el['public_tr'])
+        for coupons_tr in coupons_num:
+            coupons_td = self.locator_element(new_el=coupons_tr, locators=coupon_el['public_td'])
+            if self.locator_text(new_el=coupons_td[element_data['coupons_key_path']]) == element_data['coupons_key']:
+                self.delete_coupon_text = self.locator_text(new_el=coupons_td[element_data['coupons_key_path']])
+                return self.delete_coupon_text
+        self.delete_coupon_text = True
+
 
 # todo 接口
 class Req_coupons(BaserRequest):
@@ -270,8 +291,15 @@ class Req_coupons(BaserRequest):
 
 # todo AirtestUI
 class Air_coupons(ApiBaserPage):
-    def look_grant_coupons(self, air_el, air_swipe):
-        self.poco_click(air_locator=air_el['xcx_my'])
+    def look_grant_coupons(self, air_el, air_swipe, air_data):
+        # 获取小程序底部菜单栏
+        xcx_menu_bar = self.poco_element(air_locator=air_el['xcx_menu_bar'])
+        for menu_bar_name in xcx_menu_bar:
+            if self.poco_text(air_new=menu_bar_name) == air_data['xcx_my']:
+                self.xcx_my = menu_bar_name
+            if self.poco_text(air_new=menu_bar_name) == air_data['xcx_home']:
+                self.xcx_home = menu_bar_name
+        self.poco_click(air_new=self.xcx_my)
         for i in range(10):
             if self.poco_exists(air_locator=air_el['xcx_grant_coupons']):
                 self.poco_click(air_locator=air_el['xcx_grant_coupons'])
@@ -282,38 +310,45 @@ class Air_coupons(ApiBaserPage):
 
         for i in range(10):
             if self.poco_exists(air_locator=air_el['coupons_name']):
-                self.air_grant_coupons_text = 'True'
-                self.poco_click(air_locator=air_el['xcx_return'])
-                self.poco_click(air_locator=air_el['xcx_home'])
+                self.air_grant_coupons_text = True
+                self.api_keyevent(api_data=air_data['xcx_return'])
+                sleep(2)
+                self.poco_click(air_new=self.xcx_home)
                 return self.air_grant_coupons_text
             else:
                 sleep(1)
                 self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
-        self.poco_click(air_locator=air_el['xcx_return'])
-        self.poco_click(air_locator=air_el['xcx_home'])
-        self.air_grant_coupons_text = 'False'
+        self.api_keyevent(api_data=air_data['xcx_return'])
+        sleep(2)
+        self.poco_click(air_new=self.xcx_home)
+        self.air_grant_coupons_text = False
 
     def look_coupon_envelope(self, air_el, air_data):
         for i in range(10):
             if self.api_exists(api_locator=air_data['envelope_photo']):
                 self.api_touch(api_locator=air_data['envelope_photo'])
-                self.poco_click(air_locator=air_el['xcx_return'])
-                self.look_envelope_text = 'True'
+                sleep(2)
+                self.api_keyevent(api_data=air_data['xcx_return'])
+                self.look_envelope_text = True
                 return self.look_envelope_text
             else:
                 sleep(1)
                 self.poco_click(air_locator=air_el['wx_more'])
                 wx_refresh = self.poco_element(air_locator=air_el['wx_refresh'])
                 self.poco_click(air_new=wx_refresh[air_data['wx_refresh_path']])
-        self.look_envelope_text = 'False'
+        self.look_envelope_text = False
 
 
 # todo 连接数据库
 class Mysql_coupons(Mysql):
     def delete_my_coupons(self, sql_el):
-        sql_result = self.mysql_delete(sql=sql_el)
-        if sql_result:
-            self.delete_mycoupons_text = True
+        select_result = self.mysql_select(sql=sql_el['select_my_coupons'])
+        if select_result:
+            sql_result = self.mysql_commit(sql=sql_el['delete_my_coupons'])
+            if sql_result:
+                self.delete_mycoupons_text = True
+            else:
+                self.delete_mycoupons_text = False
         else:
-            self.delete_mycoupons_text = False
+            self.delete_mycoupons_text = True
         self.close_mysql()

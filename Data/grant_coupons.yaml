@@ -20,6 +20,11 @@ Grant_coupons:
     daily_limited: 10
     # 每人总限量
     everyone_limit: 10
+    # 小程序底部菜单栏
+    xcx_my: 我的
+    xcx_home: 首页
+    # air模拟键盘返回
+    xcx_return: 'KEYCODE_BACK'
   coupons_lis:
     # 获取优惠卷发放表单
     coupons_body: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[3]/div/div[3]/table/tbody)
@@ -53,27 +58,20 @@ Grant_coupons:
   Air_coup:
     xcx_page:
       name: android.view.View
-    xcx_my:
-      text: 我的
+    xcx_menu_bar:
+      name: com.tencent.mm:id/rd
     xcx_grant_coupons:
       text: 领券中心
-    xcx_return:
-      name: com.tencent.mm:id/e6
-    xcx_home:
-      text: 首页
   Air_Mycoup:
     xcx_page:
       name: android.view.View
-    xcx_my:
-      text: 我的
+    xcx_menu_bar:
+      name: com.tencent.mm:id/rd
     xcx_grant_coupons:
       text: 我的优惠券
-    xcx_return:
-      name: com.tencent.mm:id/e6
-    xcx_home:
-      text: 首页
   swipe:
     xcx_swipe: (0.5,0.8,0.5,0.3)
   Mysql:
     sql_name: wsc_db1
-    delete_my_coupons: DELETE FROM tb_coupon_by_user WHERE user_id = 28
+    select_my_coupons: SELECT * FROM tb_coupon_by_user WHERE coupon_name = "自动化测试优惠卷"
+    delete_my_coupons: DELETE FROM tb_coupon_by_user WHERE coupon_name = "自动化测试优惠卷"
