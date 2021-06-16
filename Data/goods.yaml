@@ -16,15 +16,22 @@ goods:
     # 上传商品的excil表
     goods_spu_ex: C:/Users/Administrator/Desktop/wangdiantong.xls
     # spu编码
-    spu_path: 4
+    admin_spu_path: 4
+    back_spu_path: 3
+    # 上架按钮
+    up_button_path: 5
   goods_spu:
     # 点击上传模板
     goods_template: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button[3]/span)
     public_input: (class name,el-input__inner)
     public_ul: (class name,el-scrollbar__view)
     public_li: (xpath,li)
-    public_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    admin_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    back_tbody: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[1]/div/div[3]/table/tbody)
     public_tr: (xpath,tr)
     public_td: (xpath,td)
+    public_button: (class name,el-button)
     # 上传商品
     upload_spu: (name,file)
+    # 勾选商品
+    check_goods: (class name,el-checkbox__input)

@@ -1,5 +1,6 @@
 from Common.Element import *
 from time import sleep
+import random
 
 
 class Goods(BaserPage):
@@ -25,13 +26,54 @@ class Goods(BaserPage):
         # 刷新页面
         self.refresh()
         # 拿到当前页面的表单元素
-        tr_number = self.locator_element(locator=elemter['public_tbody'], locators=elemter['public_tr'])
+        tr_number = self.locator_element(locator=elemter['admin_tbody'], locators=elemter['public_tr'])
         for public_tr in tr_number:
             td_number = self.locator_element(new_el=public_tr, locators=elemter['public_td'])
-            spu = self.locator_text(new_el=td_number[goods_data['spu_path']])
+            spu = self.locator_text(new_el=td_number[goods_data['admin_spu_path']])
             self.spu_lis.append(spu)
         goods_lis = set(self.spu_lis).intersection(set(goods_spu_lis))
         if len(goods_lis) == len(goods_spu_lis):
             return True
         else:
             return False
+
+    def up_goods(self, elemter, goods_data, page=None):
+        if page is None:
+            admin_up_goods = []
+            # 拿到所有商品
+            goods = self.locator_element(locator=elemter['admin_tbody'], locators=elemter['public_tr'])
+            # 根据商品的数量来生成随机数
+            goods_random = random.randint(1, len(goods))
+            # 拿到所有商品勾选框
+            check_goods = self.locator_elements(locator=elemter['check_goods'])
+            a = 0
+            # 根据生成的随机数来决定勾选几个商品
+            for i in range(goods_random):
+                public_td = self.locator_element(new_el=goods[0 + a], locators=elemter['public_td'])
+                # 通过循环把要勾选的商品的spu储存起来
+                admin_up_goods.append(self.locator_text(new_el=public_td[goods_data['admin_spu_path']]))
+                # 通过循环勾选商品
+                self.click(new_el=check_goods[1 + a])
+                a += 1
+            # 拿到页面上所有的button，根据下标点击上架按钮
+            public_button = self.locator_elements(locator=elemter['public_button'])
+            self.click(new_el=public_button[goods_data['up_button_path']])
+            # 把标签页切换到分销
+            self.cut_tab(goods_data['back'])
+            sleep(2)
+            return admin_up_goods
+        else:
+            spu_lis = []
+            # 拿到所有商品
+            sleep(2)
+            goods = self.locator_element(locator=elemter['back_tbody'], locators=elemter['public_tr'])
+            for public_tr in goods:
+                public_td = self.locator_element(new_el=public_tr, locators=elemter['public_td'])
+                spu = self.locator_text(new_el=public_td[goods_data['back_spu_path']])
+                spu_lis.append(spu)
+            up_goods = list(set(page).difference(set(spu_lis)))
+            if up_goods:
+                print('未显示的spu', up_goods)
+                return False
+            else:
+                return True
