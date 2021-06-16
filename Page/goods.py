@@ -1,51 +1,37 @@
 from Common.Element import *
 from time import sleep
-from selenium.webdriver.common.keys import Keys
 
 
 class Goods(BaserPage):
-    # def login(self, username, password, url, elemter):
-    #     # 转换数据类型
-    #     user_name = self.str_by_tuple(elemter['username'])
-    #     user_password = self.str_by_tuple(elemter['password'])
-    #     user_submit = self.str_by_tuple(elemter['submit'])
-    #     user_text = self.str_by_tuple(elemter['text'])
-    #     # 业务实现
-    #     self.open(url=url)
-    #     self.send_key(locator=user_name, locators=None, value=username)
-    #     self.send_key(locator=user_password, locators=None, value=password)
-    #     self.click(locator=user_submit, locators=None)
-    #     self.login_text = self.locator_text(locator=user_text, locators=None)
-
-    def upload_goods(self, elemter, goods_spu_ex):
-        # 转换数据类型
-        goods_administrations = self.str_by_tuple(elemter['goods_administrations'])
-        goods_list = self.str_by_tuple(elemter['goods_list'])
-        goods_template = self.str_by_tuple(elemter['goods_template'])
-        pitch_on_one = self.str_by_tuple(elemter['pitch_on_one'])
-        pitch_on_two = self.str_by_tuple(elemter['pitch_on_two'])
-        submit_two = self.str_by_tuple(elemter['submit_two'])
-        page_turning = self.str_by_tuple(elemter['page_turning'])
-        goods_spu_text = self.str_by_tuple(elemter['goods_spu_text'])
-        # 业务实现
-        # 商品管理
-        self.click(locator=goods_administrations, locators=None)
-        # 商品列表
-        self.click(locator=goods_list, locators=None)
-        # # 点击上传模板
-        # self.click(locator=goods_template, locators=None)
-        # # 点击选择运费模板
-        # self.click(locator=pitch_on_one, locators=None)
-        # # 选择第一个运费模板
-        # self.click(locator=pitch_on_two, locators=None)
-        # # 上传商品
-        # self.send_key(locator=submit_two, locators=None, value=goods_spu_ex)
-        # sleep(3)
-        # # 进入第二页
-        # self.click(locator=page_turning, locators=None)
-        sleep(1)
-        # 断言校验结果
-        self.goods_spu_text = self.locator_text(locator=goods_spu_text, locators=None)
-        print('--------两秒后结束测试--------')
-        sleep(2)
-        self.quit()
+    def upload_goods(self, elemter, goods_data):
+        self.spu_lis = []
+        # 点击上传模板
+        self.click(locator=elemter['goods_template'], locators=None)
+        # 获取到页面上所有的input框
+        public_input = self.locator_elements(locator=elemter['public_input'])
+        # 运费模板是最后一位所以默认取最后一个
+        self.click(new_el=public_input[-1])
+        # 取到页面上所有的ul
+        public_ul = self.locator_elements(locator=elemter['public_ul'])
+        # 取到运费模板里所有运费
+        public_li = self.locator_element(new_el=public_ul[-1], locators=elemter['public_li'])
+        # 第一个是包邮，默认取第一个，也可以取随机
+        self.click(new_el=public_li[0])
+        # 上传商品
+        self.send_key(locator=elemter['upload_spu'], locators=None, value=goods_data['goods_spu_ex'])
+        # 拿到上传所有商品，因旺店通逻辑一个商品一秒，所以，取到当前所有xls里的长度-1就是要拉取的商品数量
+        goods_spu_lis = goods_data['goods_spu']
+        sleep(len(goods_spu_lis) + 2)
+        # 刷新页面
+        self.refresh()
+        # 拿到当前页面的表单元素
+        tr_number = self.locator_element(locator=elemter['public_tbody'], locators=elemter['public_tr'])
+        for public_tr in tr_number:
+            td_number = self.locator_element(new_el=public_tr, locators=elemter['public_td'])
+            spu = self.locator_text(new_el=td_number[goods_data['spu_path']])
+            self.spu_lis.append(spu)
+        goods_lis = set(self.spu_lis).intersection(set(goods_spu_lis))
+        if len(goods_lis) == len(goods_spu_lis):
+            return True
+        else:
+            return False

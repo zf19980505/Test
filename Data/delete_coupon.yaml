@@ -39,7 +39,7 @@ Delete_coupons:
     xcx_grant_coupons:
       text: 领券中心
   swipe:
-    xcx_swipe: (0.5,0.8,0.5,0.6)
+    xcx_swipe: (0.2,0.8,0.2,0.3)
   Mysql:
     sql_name: wsc_db1
     select_my_coupons: SELECT * FROM tb_coupon_by_user WHERE coupon_name = "自动化测试优惠卷"

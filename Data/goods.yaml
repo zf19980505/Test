@@ -1,29 +1,30 @@
 goods:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 商品管理
+    modus_name: 商品列表
+    # 上传商品的excil表
+    goods_spu_ex: C:/Users/Administrator/Desktop/wangdiantong.xls
+    # spu编码
+    spu_path: 4
   goods_spu:
-    # 断言的商品名称
-    goods_text: 农夫山泉
-    # 商品管理
-    goods_administrations: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[2]/div/span)
-    # 商品列表
-    goods_list: (xpath,//*[@id="app"]/div/div[1]/div/div/ul/li[2]/ul/li)
-    # 获取当前页面里的所有页数
-    goods_page: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/ul)
-    # 获取最后一页页数
-    page_turning2: (xpath,li)
     # 点击上传模板
     goods_template: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button[3]/span)
-    # 点击选择运费模板
-    pitch_on_one: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[6]/div/div[2]/form/div/div/div/div[1]/input)
-    # 选择第一个运费模板
-    pitch_on_two: (xpath,/html/body/div[4]/div[1]/div[1]/ul/li[1]/span)
+    public_input: (class name,el-input__inner)
+    public_ul: (class name,el-scrollbar__view)
+    public_li: (xpath,li)
+    public_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
     # 上传商品
-    submit_two: (name,file)
-    # 上传商品的excil表
-    goods_spu_ex: C:/Users/zugou/Desktop/wangdiantong.xlsx
-    # 进入第二页
-    page_turning: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/ul/li[2])
-    # 跳转页面的input框
-    page_turning1: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[4]/div/span/div/input)
-    # 新商品
-    goods_spu_text: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody/tr[7]/td[3]/div/span[1])
-
+    upload_spu: (name,file)

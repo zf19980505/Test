@@ -71,3 +71,19 @@ class BaserPage:
             self.send_key(value=keyboard_value, new_el=new_el)
         else:
             self.send_key(value=keyboard_value, locator=locator, locators=locators)
+
+    # 刷新当前页面
+    def refresh(self):
+        self.driver.refresh()
+
+    # 新建标签页
+    def new_tab(self):
+        new_windows = 'window.open()'
+        self.driver.execute_script(new_windows)
+        admin = self.driver.window_handles[0]
+        back = self.driver.window_handles[1]
+        return admin, back
+
+    # 切换标签页
+    def cut_tab(self, tab):
+        self.driver.switch_to.window(tab)

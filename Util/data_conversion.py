@@ -1,3 +1,6 @@
+import xlrd
+
+
 class Data_conversion:
     def __init__(self):
         self.lis_value = []
@@ -26,3 +29,10 @@ class Data_conversion:
         self.zip_obj = zip(self.lis_key, self.lis_value)
         self.dict_data = dict(self.zip_obj)
         return self.dict_data
+
+    # 读取xls表格的内容
+    def read_xls(self, xls_data):
+        readbook = xlrd.open_workbook(r'' + xls_data)
+        sheet = readbook.sheet_by_index(0)  # 索引的方式，从0开始
+        ncol_value = sheet.col_values(0)
+        return ncol_value[1:]

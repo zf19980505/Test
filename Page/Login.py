@@ -6,7 +6,7 @@ from time import sleep
 
 class Login_server(BaserPage):
     # 用户登录
-    def logins(self, username, password, url, elemter):
+    def logins(self, username, password, elemter, url, url2=None):
         # 业务实现
         self.open(url=url)
         self.send_key(locator=elemter['username'], locators=None, value=username)
@@ -14,6 +14,19 @@ class Login_server(BaserPage):
         self.click(locator=elemter['submit'], locators=None)
         sleep(5)
         self.login_text = self.locator_text(locator=elemter['text'], locators=None)
+        if url2 is not None:
+            # 拿到所有标签页
+            admin, back = self.new_tab()
+            # 切换到另外一个标签页
+            self.cut_tab(back)
+            # 登录
+            self.open(url2)
+            self.send_key(locator=elemter['username'], locators=None, value=username)
+            self.send_key(locator=elemter['password'], locators=None, value=password)
+            self.click(locator=elemter['submit'], locators=None)
+            sleep(5)
+            self.login2_text = self.locator_text(locator=elemter['text'], locators=None)
+            return admin, back
 
     # 拿到首页菜单
     def menu_module(self, menu_path, element_data=None, again_menu=None):
