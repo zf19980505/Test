@@ -62,29 +62,47 @@ class Login_server(BaserPage):
 
 class Air_Loging(ApiBaserPage):
     def xcx_login(self, air_el, air_swipe, air_data):
-        self.poco_click(air_locator=air_el['app'])
+        for i in range(10):
+            if self.poco_exists(air_locator=air_el['app']):
+                self.poco_click(air_locator=air_el['app'])
+                break
+            else:
+                sleep(1)
         self.poco_swipe(air_locator=air_el['weixin_name'], value=air_swipe['weixin_swipe'])
-        sleep(2)
+        sleep(1)
         xcx = self.poco_element(air_locator=air_el['xcx_lis'])
-        sleep(2)
         for i in xcx:
             i.get_text()
             if i.get_text() == air_data['xcx_name']:
                 i.click()
                 break
-
-        self.poco_click(air_locator=air_el['xcx_class'])
-        self.poco_click(air_locator=air_el['xcx_login_button'])
-        self.poco_click(air_locator=air_el['xcx_login_submit'])
-        # 循环10秒查看是否登录
+        # 获取到小程序底部的菜单栏
+        sleep(3)
         for i in range(10):
-            sleep(1)
-            if self.api_exists(api_locator=air_data['xcx_notlogin']):
-                self.xcx_login_text = 'False'
+            if self.poco_exists(air_locator=air_el['xcx_class']):
+                xcx_class = self.poco_element(air_locator=air_el['xcx_class'])
+                # 通过循环给要点击的对象赋值
+                for xcx_down_name in xcx_class:
+                    if self.poco_text(air_new=xcx_down_name) == air_data['my_page']:
+                        self.my_page = xcx_down_name
+                    if self.poco_text(air_new=xcx_down_name) == air_data['home_page']:
+                        self.home_page = xcx_down_name
+                self.poco_click(air_new=self.my_page)
+                if self.poco_exists(air_locator=air_el['xcx_login_button']):
+                    self.poco_click(air_locator=air_el['xcx_login_button'])
+                    self.poco_click(air_locator=air_el['xcx_login_submit'])
+                # 循环10秒查看是否登录
+                for a in range(10):
+                    sleep(1)
+                    if self.api_exists(api_locator=air_data['xcx_notlogin']):
+                        self.poco_click(air_new=self.home_page)
+                        return False
+                    else:
+                        self.poco_click(air_new=self.home_page)
+                        return True
             else:
-                self.xcx_login_text = 'True'
-                self.poco_click(air_locator=air_el['xcx_home_page'])
-                return self.xcx_login_text
+                sleep(1)
+        return False
 
 
 class Req_login(BaserRequest):

@@ -84,11 +84,9 @@ class Goods(BaserPage):
             if up_down is None:
                 # 上架
                 up_goods = list(set(page).difference(set(spu_lis)))
-                print('上架后分销未显示的spu：', up_goods)
             else:
                 # 下架/删除
                 up_goods = list(set(page).intersection(set(spu_lis)))
-                print('下架或删除后分销还显示的spu：', up_goods)
             self.cut_tab(goods_data['admin'])
             if up_goods:
                 return False

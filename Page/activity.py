@@ -26,68 +26,76 @@ class Activity(BaserPage, metaclass=Singleton):
         # group_goods = self.locator_element(locator=group['group_lis'], locators=group['group_goods_tr'])
         # if len(group_goods) != 0:
         #     self.gruop_goods_len = len(group_goods)
-        # 新建拼团
-        self.click(locator=new_group['new'], locators=None)
-        # 打开新建时间
-        self.click(locator=new_group['time'], locators=None)
         # 获取明天日期
         end_dates = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-        # 开始时间
-        self.keyboard_Ctrl(locator=new_group['start_time'], locators=None, value=element_data['ctrl_a'])
-        self.send_key(locator=new_group['start_time'], locators=None, value=element_data['start_end_times'])
-        # 结束时间
-        self.keyboard_Ctrl(locator=new_group['end_date'], locators=None, value=element_data['ctrl_a'])
-        self.send_key(locator=new_group['end_date'], locators=None, value=end_dates)
-        self.keyboard_Ctrl(locator=new_group['end_time'], locators=None, value=element_data['ctrl_a'])
-        self.send_key(locator=new_group['end_time'], locators=None, value=element_data['start_end_times'])
-        # 提交时间
-        self.click(locator=new_group['time_submit'], locators=None)
-        # =========选择设置拼团有效期和人数============
-        self.send_key(locator=new_group['group_order_time'], locators=None, value=element_data['date_order_time'])
-        self.send_key(locator=new_group['group_order_number'], locators=None, value=element_data['date_order_number'])
-        # =========选择设置拼团商品============
-        self.click(locator=new_group['group_spulist'], locators=None)
-        group_spulis = self.locator_element(locator=new_group['spu_listone'], locators=new_group['spu_listtwo'])
-        # todo 通过循环拿到固定的单个商品以便作为拼团商品
-        for group_spu in group_spulis:
-            if group_spu.text == element_data['group_name']:
-                group_spu.click()
-        # todo 通过生成随机数点击随机商品
-        # # 生成随机数,并且随机选择商品
-        # if len(group_spulis) >= 8:
-        #     random_number = random.randint(0, 7)
-        # else:
-        #     random_number = random.randint(0, len(group_spulis) - 1)
-        # # 选择拼团商品
-        # group_spulis[random_number].click()
-        group_goods_lis = self.locator_element(locator=new_group['group_spuone'], locators=new_group['group_sput_tr'])
-        for group_spus in group_goods_lis:
-            locatorkeys, locator_values = new_group['group_spu_td']
-            group_spu = group_spus.find_elements(locatorkeys, locator_values)
+        # 新建拼团
+        self.click(locator=new_group['new'], locators=None)
+        # 拿到页面上所有input框
+        public_input = self.locator_elements(locator=new_group['public_input'])
 
+        # 打开新建时间
+        self.click(new_el=public_input[element_data['time_path']])
+        # 重新获取页面上的input框
+        sleep(1)
+        public_input = self.locator_elements(locator=new_group['public_input'])
+        # 开始时间
+        self.keyboard_Ctrl(new_el=public_input[element_data['start_time_path']], value=element_data['ctrl_a'])
+        self.send_key(new_el=public_input[element_data['start_time_path']], value=element_data['start_end_times'])
+        # 结束时间
+        self.keyboard_Ctrl(new_el=public_input[element_data['end_date']], value=element_data['ctrl_a'])
+        self.send_key(new_el=public_input[element_data['end_date']], value=end_dates)
+        self.keyboard_Ctrl(new_el=public_input[element_data['end_time']], value=element_data['ctrl_a'])
+        self.send_key(new_el=public_input[element_data['end_time']], value=element_data['start_end_times'])
+        # 拿到页面上的所有button
+        public_button = self.locator_elements(locator=new_group['public_button'])
+        # 提交时间
+        self.click(new_el=public_button[element_data['time_submit_path']])
+        # =========选择设置拼团有效期和人数============
+        self.send_key(new_el=public_input[element_data['valid_time_path']], value=element_data['date_order_time'])
+        self.send_key(new_el=public_input[element_data['valid_number_path']], value=element_data['date_order_number'])
+        # =========选择设置拼团商品============
+        self.click(new_el=public_input[element_data['spu_lis_path']])
+        ul_number = self.locator_elements(locator=new_group['public_ul'])
+        li_number = self.locator_element(new_el=ul_number[-1], locators=new_group['public_li'])
+        for li in li_number:
+            sleep(1)
+            if self.locator_text(new_el=li) == element_data['group_name']:
+                self.click(new_el=li)
+                sleep(2)
+                break
+        # 拿到选择拼团商品之后的前端页面出现的整个body，通过他的tr和td来设置拼团价格
+        tr_number = self.locator_element(locator=new_group['new_public_tbody'], locators=new_group['public_tr'])
+        for tr in tr_number:
+            td_number = self.locator_element(new_el=tr, locators=new_group['public_td'])
             while True:
                 # 死循环为了拿到大于供货价小于零售价的拼团价格
                 # 根据供货价和零售价生成拼团价格，拼团价格取两个价格中间
-                groud_price = random.uniform(float(group_spu[4].text), float(group_spu[5].text))
+                supply_price_path = self.locator_text(new_el=td_number[element_data['supply_price_path']])
+                retail_price_path = self.locator_text(new_el=td_number[element_data['retail_price_path']])
+                groud_price = random.uniform(float(supply_price_path), float(retail_price_path))
                 # 拼团价格包留两位小数
                 groud_prices = round(groud_price, 2)
                 # print('单个sku供货价：', float(group_spu[4].text))
                 # print('单个sku零售价：', float(group_spu[5].text))
                 # print('单个sku的拼团价格：', groud_prices)
-                if float(group_spu[4].text) < groud_prices < float(group_spu[5].text):
-                    price_keys, price_values = new_group['groud_price']
-                    group_spu[6].find_element(price_keys, price_values).send_keys(str(groud_prices))
+                if float(supply_price_path) < groud_prices < float(retail_price_path):
+                    group_price = self.locator_element(new_el=td_number[element_data['group_price_path']],
+                                                       locator=new_group['group_price'])
+                    self.send_key(new_el=group_price, value=str(groud_prices))
+                    # self.send_key(new_el=td_number[element_data['group_price_path']], value=str(groud_prices))
                     break
-
             # 拿到该拼团商品的spu
-            self.new_textone = group_spu[0].text
-        self.click(locator=new_group['new_submit'], locators=None)
-        goods_numone = self.locator_element(locator=group['group_lis'], locators=group['group_goods_tr'])
-        for group_lis in goods_numone:
-            new_goods_key, new_goods_values = group['group_goods_td']
-            self.groups = group_lis.find_elements(new_goods_key, new_goods_values)
-            if self.groups[3].text == self.new_textone:
-                self.new_texttwo = self.groups[3].text
+            self.new_textone = self.locator_text(new_el=td_number[element_data['goods_spu_path']])
+        self.click(new_el=public_button[element_data['new_submit_path']])
+        sleep(3)
+        # 拼团列表
+        group_tr_number = self.locator_element(locator=group['group_lis'], locators=group['group_goods_tr'])
+        for group_tr in group_tr_number:
+            group_td_number = self.locator_element(new_el=group_tr, locators=group['group_goods_td'])
+            if self.locator_text(new_el=group_td_number[element_data['group_spu_path']]) == self.new_textone:
+                self.new_texttwo = self.new_textone
+                return self.new_texttwo
+        self.new_texttwo = None
 
     # 删除拼团
     def delete_group(self, groud_el):
@@ -212,12 +220,12 @@ class Air_Activity(ApiBaserPage, metaclass=Singleton):
                 # 循环20秒等待找到元素
                 for i in range(10):
                     if self.api_exists(api_locator=air_data['xcx_group_buttom']):
-                        self.xcx_group_text = 'True'
-                        return self.xcx_group_text
+                        self.api_keyevent(api_data=air_data['xcx_return'])
+                        return True
                     else:
                         sleep(2)
-                self.xcx_group_text = 'Fales'
-                break
+                self.api_keyevent(api_data=air_data['xcx_return'])
+                return False
             else:
                 self.poco_swipe(air_locator=air_el['xcx_page'], value=air_swipe['xcx_swipe'])
 

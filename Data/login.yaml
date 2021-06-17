@@ -22,21 +22,21 @@ login:
     User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36
   xcx:
     app:
-      desc: 微信
+      name: 微信
     weixin_name:
-      name: com.tencent.mm:id/b8w
+      name: android.view.View
     xcx_lis:
-      name: com.tencent.mm:id/gam
+      name: com.tencent.mm:id/ipm
     swipe:
       weixin_swipe: (0.5,0.3,0.5,0.8)
     xcx_class:
-      text: 我的
+      name: com.tencent.mm:id/rd
     xcx_login_button:
       text: 登录/注册
     xcx_login_submit:
       text: 允许
-    xcx_home_page:
-      text: 首页
     xcx_el_data:
+      my_page: 我的
+      home_page: 首页
       xcx_name: AR试鞋
-      xcx_notlogin: E:/Python/TestWebProject/Data/log/未登录状态.png
+      xcx_notlogin: D:/pycharm/TestWebProject/Data/log/未登录状态.png

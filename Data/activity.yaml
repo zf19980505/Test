@@ -14,8 +14,30 @@ Activity:
     modus: li
     moules_lis_name: 活动管理
     modus_name: 拼团管理
+    # 新建时间，开始时间，结束日期，结束时间的路径
+    time_path: 0
+    start_time_path: 5
+    end_date: 6
+    end_time: 7
+    # 新建时间确定按钮的路径
+    time_submit_path: 2
+    # 成团有效时间和人数的路径
+    valid_time_path: 1
+    valid_number_path: 2
+    # 设置拼团商品的路径
+    spu_lis_path: 3
+    # 商品的供货价,零售价,拼团价的路径
+    supply_price_path: 4
+    retail_price_path: 5
+    group_price_path: 6
+    # 商品的spu的路径
+    goods_spu_path: 0
+    # 保存按钮的路径
+    new_submit_path: 0
+    # 拼团列表里的spu路径
+    group_spu_path: 3
     # 取固定的拼团商品
-    group_name: SPU2021536910001
+    group_name: SPU2021287510012
     # 模拟ctrl + a
     ctrl_a: a
     # 开始时间
@@ -37,35 +59,14 @@ Activity:
   new_group:
     # 新建按钮
     new: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button)
-    # 打开新建时间
-    time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[1]/div/div/input[1])
-    # 开始时间
-    start_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[1]/span[2]/div[1]/input)
-    # 结束日期
-    end_date: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[1]/div/input)
-    # 结束时间
-    end_time: (xpath,/html/body/div[2]/div[1]/div/div[1]/span[3]/span[2]/div[1]/input)
-    # 确定
-    time_submit: (xpath,/html/body/div[2]/div[2]/button[2]/span)
-    # 成团有效时间
-    group_order_time: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[2]/div/div/form/div/div/div/input)
-    # 成团人数
-    group_order_number: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[3]/div/div/form/div/div/div/input)
-    # 设置拼团价格
-    groud_price: (class name,el-input__inner)
-    # 打开选择要加入设置为拼团的商品
-    group_spulist: (class name,el-select)
-    # 商品列表
-    spu_listone: (xpath,/html/body/div[3]/div[1]/div[1]/ul)
-    # 通过下标选中商品
-    spu_listtwo: (xpath,li)
-    # 拿到页面拼团商品列表
-    group_spuone: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[5]/div/div/div[3]/table/tbody)
-    # 可以通过下标拿到拼团商品里的内容
-    group_sput_tr: (xpath,tr)
-    group_spu_td: (xpath,td)
-    # 保存按钮
-    new_submit: (class name,el-button)
+    public_input: (class name,el-input__inner)
+    public_button: (class name,el-button)
+    public_ul: (class name,el-scrollbar__view)
+    public_li: (xpath,li)
+    new_public_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/form/div[6]/div/div/div[3]/table/tbody)
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+    group_price: (xpath,div/div/input)
   req_grouop:
     path:
       gruop_goods_lis_path: /group/list

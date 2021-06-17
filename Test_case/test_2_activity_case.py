@@ -27,13 +27,12 @@ class Activity_TestRun(unittest.TestCase):
             api.auto_setup(__file__, logdir=None, devices=[yeshen])
         cls.poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
         cls.driver = webdriver.Chrome()
-        cls.url = conf.get('DEFAULT', 'A_admin_url')
+        # 万色城二期总部后台
+        cls.wsc_admin_url = conf.get('DEFAULT', 'wsc_admin_url')
         # 定义一个参数接收储存添加成为拼团商品的SPU
         cls.group_good_spu = None
         # 定义一个参数接收储存添加成为拼团商品的ID
-        # cls.group_id = None
-        # # 定义一个参数来接收token
-        # cls.token = None
+        cls.group_id = None
 
     def setUp(self):
         self.Login_case = Login_server(self.driver, Keys)
@@ -46,7 +45,7 @@ class Activity_TestRun(unittest.TestCase):
         """"登录"""
         data = kwargs['data']
         login_el = self.util.str_by_tuple(kwargs['login'])
-        url = self.url + data['el_login_path']
+        url = self.wsc_admin_url + data['el_login_path']
         self.Login_case.logins(username=data['username'], password=data['password'], url=url, elemter=login_el)
         # 断言校验
         test_text = self.Login_case.login_text
@@ -72,18 +71,9 @@ class Activity_TestRun(unittest.TestCase):
     @file_data('../Data/xcx_group.yaml')
     def test_2_xcxgroup(self, **kwargs):
         size = self.util.str_lis(kwargs['swipe'])
-        self.air_activity.xcx_group(air_el=kwargs['xcx'], air_swipe=size, air_data=kwargs['xcx_el_data'])
+        xcx_group_text = self.air_activity.xcx_group(air_el=kwargs['xcx'], air_swipe=size, air_data=kwargs['xcx_el_data'])
         # 断言校验
-        xcx_group_text = self.air_activity.xcx_group_text
-        self.assertEqual(first='True', second=xcx_group_text, msg='该商品不是拼团商品')
-
-    @file_data('../Data/xcx_group.yaml')
-    def test_3_xcx_group_pay(self, **kwargs):
-        xcx_el_data = kwargs['xcx_el_data']
-        # 下单拼团订单并且支付
-        self.Airtest_Server.test_airpay(air_data=xcx_el_data)
-        # 查看订单以作为断言
-        # self
+        self.assertEqual(first=True, second=xcx_group_text, msg='该商品不是拼团商品')
 
     # todo 把拼团商品添加进入商品布局管理
     # @file_data('../Data/Goodsarea.yaml')
@@ -97,15 +87,15 @@ class Activity_TestRun(unittest.TestCase):
     #     self.assertEqual(first='True', second=add_goods_text, msg='拼团商品添加布局失败')
 
     @file_data('../Data/activity.yaml')
-    def test_4_deletegroup(self, **kwargs):
+    def test_3_deletegroup(self, **kwargs):
         """删除拼团"""
         # todo 接口直接请求删除
         req_grouop = kwargs['req_grouop']
         path = req_grouop['path']
         data = req_grouop['data']
         data['public_data']['spucode'] = self.group_good_spu
-        url = self.url + path['gruop_goods_lis_path']
-        delete_url = self.url + path['delete_group_path']
+        url = self.wsc_admin_url + path['gruop_goods_lis_path']
+        delete_url = self.wsc_admin_url + path['delete_group_path']
         self.Req_Activity.gruop_goods_lis(url=url, params=data['gruop_goods_lis_data'], public_data=data['public_data'])
         req_grouop['data']['delte_group_data'] = {'id': self.Req_Activity.group_id}
         self.Req_Activity.delete_group_good(url=delete_url, params=data['delte_group_data'])
@@ -130,7 +120,7 @@ class Activity_TestRun(unittest.TestCase):
     #     delete_goods_text = self.activity_case.delete_goods_text
     #     self.assertEqual(first='True', second=delete_goods_text, msg='从布局里删除拼团商品失败')
 
-    def test_5_over(self):
+    def test_4_over(self):
         self.Login_case.close()
 
 

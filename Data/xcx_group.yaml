@@ -11,12 +11,12 @@ Group:
   swipe:
     xcx_swipe: (0.5,0.8,0.5,0.3)
   xcx_el_data:
-    xcx_group_good: E:/Python/TestWebProject/Data/log/拼团商品.png
-    xcx_group_buttom: E:/Python/TestWebProject/Data/log/拼团按钮.png
+    xcx_group_good: D:/pycharm/TestWebProject/Data/log/拼团商品.png
+    xcx_group_buttom: D:/pycharm/TestWebProject/Data/log/拼团按钮.png
     # airtest截图支付
-    xcx_group_pay_buttom: E:/Python/TestWebProject/Data/log/立即购买按钮.png
-    xcx_group_pay_submit: E:/Python/TestWebProject/Data/log/提交订单按钮.png
-    xcx_wx_pay: E:/Python/TestWebProject/Data/log/微信支付.png
-    xcx_group_pay_complete: E:/Python/TestWebProject/Data/log/微信支付完成.png
-    # air_test键盘输入代码
-    xcx_keyboard: KEYCODE_1,KEYCODE_9,KEYCODE_9,KEYCODE_8,KEYCODE_5,KEYCODE_5
+    xcx_group_pay_buttom: D:/pycharm/TestWebProject/Data/log/立即购买按钮.png
+    xcx_group_pay_submit: D:/pycharm/TestWebProject/Data/log/提交订单按钮.png
+    xcx_wx_pay: D:/pycharm/TestWebProject/Data/log/微信支付.png
+    xcx_group_pay_complete: D:/pycharm/TestWebProject/Data/log/微信支付完成.png
+    # air模拟键盘返回
+    xcx_return: 'KEYCODE_BACK'
