@@ -31,13 +31,14 @@ class Goods(BaserPage):
             td_number = self.locator_element(new_el=public_tr, locators=elemter['public_td'])
             spu = self.locator_text(new_el=td_number[goods_data['admin_spu_path']])
             self.spu_lis.append(spu)
-        goods_lis = set(self.spu_lis).intersection(set(goods_spu_lis))
-        if len(goods_lis) == len(goods_spu_lis):
-            return True
-        else:
+        goods_lis = list(set(self.spu_lis).difference(set(goods_spu_lis)))
+        if goods_lis:
+            print('未拉取到的spu：', goods_lis)
             return False
+        else:
+            return True
 
-    def up_goods(self, elemter, goods_data, page=None):
+    def up_down_goods(self, elemter, goods_data, page=None, up_down=None, delete=None):
         if page is None:
             admin_up_goods = []
             # 拿到所有商品
@@ -57,13 +58,22 @@ class Goods(BaserPage):
                 a += 1
             # 拿到页面上所有的button，根据下标点击上架按钮
             public_button = self.locator_elements(locator=elemter['public_button'])
-            self.click(new_el=public_button[goods_data['up_button_path']])
+            if up_down is None:
+                # 上架
+                self.click(new_el=public_button[goods_data['up_button_path']])
+            elif delete is None:
+                # 下架
+                self.click(new_el=public_button[goods_data['down_button_path']])
+            else:
+                # 删除
+                self.click(new_el=public_button[goods_data['delete_button_path']])
             # 把标签页切换到分销
             self.cut_tab(goods_data['back'])
             sleep(2)
             return admin_up_goods
         else:
             spu_lis = []
+            self.refresh()
             # 拿到所有商品
             sleep(2)
             goods = self.locator_element(locator=elemter['back_tbody'], locators=elemter['public_tr'])
@@ -71,9 +81,16 @@ class Goods(BaserPage):
                 public_td = self.locator_element(new_el=public_tr, locators=elemter['public_td'])
                 spu = self.locator_text(new_el=public_td[goods_data['back_spu_path']])
                 spu_lis.append(spu)
-            up_goods = list(set(page).difference(set(spu_lis)))
+            if up_down is None:
+                # 上架
+                up_goods = list(set(page).difference(set(spu_lis)))
+                print('上架后分销未显示的spu：', up_goods)
+            else:
+                # 下架/删除
+                up_goods = list(set(page).intersection(set(spu_lis)))
+                print('下架或删除后分销还显示的spu：', up_goods)
+            self.cut_tab(goods_data['admin'])
             if up_goods:
-                print('未显示的spu', up_goods)
                 return False
             else:
                 return True

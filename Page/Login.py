@@ -41,7 +41,6 @@ class Login_server(BaserPage):
                     modus_lis_name.click()
                     modus = self.locator_element(locator=menu_path['modus_lis'], locators=menu_path['modus'])
                     for module_name in modus:
-                        print(module_name.text)
                         if module_name.text == element_data['modus_name']:
                             sleep(1)
                             module_name.click()

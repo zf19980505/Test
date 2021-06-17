@@ -54,13 +54,13 @@ class Air_test(unittest.TestCase):
         # 断言校验
         test_text = self.Login_case.login_text
         self.assertEqual(first=data['verify'], second=test_text, msg='访问首页有误')
-    #
-    # @file_data('../Data/coupons.yaml')
-    # # @file_data('../Data/grant_coupons.yaml')
-    # def test_1(self, **kwargs):
-    #     # 首页菜单
-    #     menu_path = self.util.str_by_tuple(kwargs['menu_path'])
-    #     self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
+
+    @file_data('../Data/coupons.yaml')
+    # @file_data('../Data/grant_coupons.yaml')
+    def test_1(self, **kwargs):
+        # 首页菜单
+        menu_path = self.util.str_by_tuple(kwargs['menu_path'])
+        self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
 
     @file_data('../Data/coupon_envelope.yaml')
     def test_2(self, **kwargs):

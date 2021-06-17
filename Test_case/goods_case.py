@@ -15,8 +15,9 @@ class Goods_TestRun(unittest.TestCase):
     def setUpClass(cls):
         conf = configparser.ConfigParser()
         conf.read('../Confing/request_confing.ini')
-        # 万色城二期分销后台
+        # 万色城二期总部后台
         cls.wsc_admin_url = conf.get('DEFAULT', 'wsc_admin_url')
+        # 万色城二期分销后台
         cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
         cls.util = Data_conversion()
         cls.driver = webdriver.Chrome()
@@ -65,13 +66,14 @@ class Goods_TestRun(unittest.TestCase):
         goods_data = kwargs['Element_data']
         goods_data['goods_spu'] = self.util.read_xls(goods_data['goods_spu_ex'])
         goods_data['back'] = self.back
+        goods_data['admin'] = self.admin
         # 业务
         # 总部
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        admin_up_goods = self.goods_case.up_goods(elemter=goods_el, goods_data=goods_data)
+        admin_up_goods = self.goods_case.up_down_goods(elemter=goods_el, goods_data=goods_data)
         # 分销
         self.Login_case.menu_module(menu_path=menu_path, element_data=kwargs['Element_data'])
-        up_goods = self.goods_case.up_goods(elemter=goods_el, goods_data=goods_data, page=admin_up_goods)
+        up_goods = self.goods_case.up_down_goods(elemter=goods_el, goods_data=goods_data, page=admin_up_goods)
         # 断言
         self.assertEqual(first=True, second=up_goods, msg='上架商品在分销后台看不到')
 

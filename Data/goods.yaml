@@ -20,6 +20,8 @@ goods:
     back_spu_path: 3
     # 上架按钮
     up_button_path: 5
+    down_button_path: 6
+    delete_button_path: 2
   goods_spu:
     # 点击上传模板
     goods_template: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button[3]/span)
