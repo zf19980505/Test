@@ -1,8 +1,9 @@
 class BaserPage:
     # 初始化基础类
-    def __init__(self, driver, keyboard):
+    def __init__(self, driver, keyboard=None, action=None):
         self.driver = driver
         self.keyboard = keyboard
+        self.action = action
         self.driver.implicitly_wait(60)
 
     # 启动浏览器，访问指定页面
@@ -87,3 +88,7 @@ class BaserPage:
     # 切换标签页
     def cut_tab(self, tab):
         self.driver.switch_to.window(tab)
+
+    # 模拟鼠标悬停操作
+    def hovering(self, action_el):
+        self.action(self.driver).move_to_element(self.locator_element(locator=action_el)).perform()

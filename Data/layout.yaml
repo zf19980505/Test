@@ -1,0 +1,49 @@
+layout:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 前端布局管理
+    modus_name: 首页商品版块
+    # 首页商品板块的新建板块
+    new_home_layout: 2
+    # 新建板块的名称
+    home_layout_path: 0
+    home_layout_name: 自动化首
+    # 新建板块的排序
+    home_sort: 1
+    # 新建板块的保存
+    home_layout_submit: 0
+    # 首页板块的板块名称路径
+    home_name_path: 1
+    # air_xcx小程序的刷新按钮的小标
+    wx_refresh_path: 9
+  public_layout:
+    public_button: (class name,el-button)
+    public_input: (class name,el-input__inner)
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+    # 首页商品板块的启用按钮
+    home_start_using: (class name,el-switch)
+    # 总部
+    adminhome_layout_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    # 分销
+    backhome_layout_tbody: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/div/div[3]/table/tbody)
+  air_layout:
+    # 微信小程序的右上角的更多
+    wx_more:
+      name: 更多
+    # 刷新，重新进入小程序
+    wx_refresh:
+      name: com.tencent.mm:id/dt5
+    new_home_name:
+      text: 自动化首

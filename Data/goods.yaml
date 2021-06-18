@@ -22,6 +22,14 @@ goods:
     up_button_path: 5
     down_button_path: 6
     delete_button_path: 2
+    # 编辑商品主图
+    master_map_path: 0
+    master_map: D:/pycharm/TestWebProject/Data/log/拼团商品.png
+    # 编辑保存按钮
+    edit_submit: 0
+    # 设置主图的商品
+    goods_spu: SPU2021287510012
+    goods_spu_path: 4
   goods_spu:
     # 点击上传模板
     goods_template: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[1]/button[3]/span)
@@ -37,3 +45,18 @@ goods:
     upload_spu: (name,file)
     # 勾选商品
     check_goods: (class name,el-checkbox__input)
+    # 编辑商品里边的主图
+    goods_master_map: (class name,el-upload-list__item-actions)
+    # 主图的删除
+    master_map_delete: (class name,el-icon-delete)
+    # 上传的input
+    pubilc_up_input: (class name,el-upload__input)
+    pubilc_content: (class name,el-form-item__content)
+  Req_goods:
+    path:
+      look_spu_path: /goods/spu
+    data:
+      master_map: default_image_url
+      spu_name: SPU2021287510012
+      look_spu_data:
+        p: 1

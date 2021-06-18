@@ -28,7 +28,7 @@ class Login(unittest.TestCase):
         cls.wsc_back_url = conf.get('DEFAULT', 'wsc_back_url')
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver, Keys)
+        self.Login_case = Login_server(driver=self.driver)
         self.Air_Loging = Air_Loging(self.poco, api)
 
     @file_data('../Data/login.yaml')

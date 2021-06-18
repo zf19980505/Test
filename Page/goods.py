@@ -1,9 +1,12 @@
 from Common.Element import *
+from Common.req_Element import *
 from time import sleep
 import random
+import json
 
 
 class Goods(BaserPage):
+    # 旺店通拉取商品
     def upload_goods(self, elemter, goods_data):
         self.spu_lis = []
         # 点击上传模板
@@ -38,6 +41,7 @@ class Goods(BaserPage):
         else:
             return True
 
+    # 总部上架商品
     def up_down_goods(self, elemter, goods_data, page=None, up_down=None, delete=None):
         if page is None:
             admin_up_goods = []
@@ -92,3 +96,40 @@ class Goods(BaserPage):
                 return False
             else:
                 return True
+
+    # 编辑商品
+    def edit_goods(self, elemter, goods_data):
+        tr_number = self.locator_element(locator=elemter['admin_tbody'], locators=elemter['public_tr'])
+        for tr in tr_number:
+            td_number = self.locator_element(new_el=tr, locators=elemter['public_td'])
+            if self.locator_text(new_el=td_number[goods_data['goods_spu_path']]) == goods_data['goods_spu']:
+                # 拿到tr里边的所有button
+                public_button = self.locator_element(new_el=td_number[-1], locators=elemter['public_button'])
+                # 最后一个就是编辑，所以选择最后一个点击打开编辑页面
+                self.click(new_el=public_button[-1])
+                self.hovering(action_el=elemter['goods_master_map'])
+                self.click(locator=elemter['master_map_delete'])
+                sleep(2)
+                # 拿到所有上传的input框
+                pubilc_up_input = self.locator_elements(locator=elemter['pubilc_up_input'])
+                self.send_key(new_el=pubilc_up_input[goods_data['master_map_path']], value=goods_data['master_map'])
+                sleep(2)
+                # 拿到编辑页面里面的所有button
+                pubilc_content = self.locator_elements(locator=elemter['pubilc_content'])
+                edit_submit = self.locator_element(new_el=pubilc_content[-1], locators=elemter['public_button'])
+                self.click(new_el=edit_submit[goods_data['edit_submit']])
+                sleep(2)
+                break
+
+
+class Req_goods(BaserRequest):
+    def look_goods(self, url, params):
+        res = self.get(url=url, params=params['look_spu_data'])
+        res_text = json.loads(res.text)
+        if res_text['code'] != 200:
+            return None
+        plist = res_text['PList']
+        for goods_number in plist:
+            for goods_key, goods_val in dict.items(goods_number):
+                if goods_val == params['spu_name']:
+                    return goods_number[params['master_map']]

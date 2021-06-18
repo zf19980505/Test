@@ -48,3 +48,7 @@ class ApiBaserPage:
 
     def api_keyevent(self, api_data):
         self.air_api.keyevent(api_data)
+
+    # 返回键
+    def api_return(self):
+        self.api_keyevent('KEYCODE_BACK')

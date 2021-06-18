@@ -35,8 +35,8 @@ class Activity_TestRun(unittest.TestCase):
         cls.group_id = None
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver, Keys)
-        self.activity_case = Activity(self.driver, Keys)
+        self.Login_case = Login_server(driver=self.driver)
+        self.activity_case = Activity(driver=self.driver, keyboard=Keys)
         self.air_activity = Air_Activity(self.poco, api)
         self.Req_Activity = Req_Activity(requests)
 

@@ -1,0 +1,34 @@
+goods_area:
+  # 首页菜单
+  menu_path:
+    # 菜单管理列表
+    menu_management: (class name,el-menu-vertical-demo)
+    menu_modules: (xpath,li/div)
+    # 单个模块
+    modus_lis: (class name,el-menu)
+    modus: (xpath,li/ul/li)
+  # 页面上元素名称数据
+  Element_data:
+    # 先拿到单个模块里边的所有内容，在去点击对应的子内容
+    modus_lis: el-menu
+    modus: li
+    moules_lis_name: 商品区域管理
+    modus_name: 一排一商品区域
+    # 新建按钮
+    new_button: 2
+    # 商品区域名称
+    new_one_area_path: 3
+    one_area_name: 自动化一排一商品区域
+    one_area_path: 1
+    one_area_coding: 2
+  public_area:
+    public_tr: (xpath,tr)
+    public_td: (xpath,td)
+    public_button: (class name,el-button)
+    public_input: (class name,el-input__inner)
+  new_goods_area:
+    admin_goodsarea_tbody: (xpath,//*[@id="app"]/div/div[2]/div[2]/div/div/div[3]/div/div[3]/table/tbody)
+    back_goodsarea_tbody: (xpath,//*[@id="app"]/div/div[2]/div/div/div/div[2]/div/div[3]/table/tbody)
+    # 新建确认按钮
+    new_area_button: (class name,dialog-footer)
+    new_area_submit: (xpath,button)

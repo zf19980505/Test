@@ -1,6 +1,8 @@
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
+import requests
 from Page.goods import *
 from Page.Login import *
 from ddt import ddt, file_data
@@ -23,10 +25,12 @@ class Goods_TestRun(unittest.TestCase):
         cls.driver = webdriver.Chrome()
         cls.admin = None
         cls.back = None
+        cls.master_map = None
 
     def setUp(self):
-        self.Login_case = Login_server(self.driver, Keys)
-        self.goods_case = Goods(self.driver, Keys)
+        self.Login_case = Login_server(driver=self.driver)
+        self.goods_case = Goods(driver=self.driver, keyboard=Keys, action=ActionChains)
+        self.Req_goods = Req_goods(requests)
 
     @file_data('../Data/login.yaml')
     def test_0_loging(self, **kwargs):
@@ -59,7 +63,27 @@ class Goods_TestRun(unittest.TestCase):
         self.assertEqual(first=True, second=new_goods_text, msg='上传模板商品失败')
 
     @file_data('../Data/goods.yaml')
-    def test_2_up_goods(self, **kwargs):
+    def test_2_edit_goodsmap(self, **kwargs):
+        # 数据处理
+        goods_el = self.util.str_by_tuple(kwargs['goods_spu'])
+        req_goods = kwargs['Req_goods']
+        req_path = req_goods['path']
+        req_data = req_goods['data']
+        url = self.wsc_admin_url + req_path['look_spu_path']
+        # 业务
+        Goods_TestRun.master_map = self.Req_goods.look_goods(url=url, params=req_data)
+        if self.master_map is not None:
+            self.goods_case.edit_goods(elemter=goods_el, goods_data=kwargs['Element_data'])
+            assert_map = self.Req_goods.look_goods(url=url, params=req_data)
+            if self.master_map != assert_map:
+                self.master_map = True
+            else:
+                self.master_map = False
+        # 断言
+        self.assertEqual(first=True, second=self.master_map, msg='给旺店通拉取商品编辑图片失败')
+
+    @file_data('../Data/goods.yaml')
+    def test_3_up_goods(self, **kwargs):
         # 数据处理
         menu_path = self.util.str_by_tuple(kwargs['menu_path'])
         goods_el = self.util.str_by_tuple(kwargs['goods_spu'])
@@ -76,7 +100,7 @@ class Goods_TestRun(unittest.TestCase):
         # 断言
         self.assertEqual(first=True, second=up_goods, msg='上架商品在分销后台看不到')
 
-    def test_3_over(self):
+    def test_4_over(self):
         self.Login_case.close()
 
 
